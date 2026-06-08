@@ -1,0 +1,107 @@
+/* ==========================================================================
+   CABEÇALHO DA SEÇÃO (IDÊNTICO AO DE PROJETOS)
+   ========================================================================== */
+.header-secao {
+  margin-bottom: 32px;
+}
+
+.header-secao h2 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.header-secao p {
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   DESMANCHANDO O CARD PAI (INTEGRAÇÃO TOTAL COM O APP)
+   ========================================================================== */
+mat-card {
+  border: none !important;
+  background: transparent !important; /* Remove o bloco branco forçado */
+  box-shadow: none !important;        /* Remove as sombras quadradas pesadas */
+  padding: 0 !important;              /* Alinha o texto perfeitamente com a margem esquerda */
+}
+
+/* ==========================================================================
+   TIPOGRAFIA E BIOGRAFIA
+   ========================================================================== */
+.biografia {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #334155; /* Cinza escuro de fácil leitura */
+  margin-bottom: 32px;
+}
+
+/* Divisor elegante e ultra-sutil */
+mat-divider {
+  margin: 16px 0 32px 0 !important;
+  border-top-color: #e2e8f0 !important; /* Ajustado para dar o contraste ideal no fundo cinza */
+}
+
+/* ==========================================================================
+   SEÇÃO DE SKILLS / HABILIDADES
+   ========================================================================== */
+.subsecao-titulo {
+  font-size: 20px; /* Um pouco mais encorpado para dar hierarquia visual */
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.subsecao-descricao {
+  font-size: 15px;
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+.tags-skills {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   CHIPS / TAGS MINI-BADGES REFINADAS
+   ========================================================================== */
+.chip-tech {
+  background-color: #ffffff !important; /* Fundo branco puro faz a tag saltar no fundo cinza */
+  color: #475569 !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  padding: 6px 12px !important;
+}
+
+/* Destaque Core (Angular, TS...) sintonizado com o roxo pastel da Home */
+.chip-tech.core {
+  background-color: #e0e7ff !important; /* Roxo suave padrão do seu app */
+  color: #4f46e5 !important;            /* Texto em roxo forte */
+  border-color: #c7d2fe !important;
+  font-weight: 600 !important;
+}
+
+/* Destaque Design / UI sintonizado com um rosa/magenta premium */
+.chip-tech.design {
+  background-color: #fdf2f8 !important;
+  color: #db2777 !important;
+  border-color: #fbcfe8 !important;
+  font-weight: 600 !important;
+}
+
+/* Destaque para Ferramentas (Git, GitHub, etc) */
+.chip-tech.tool {
+  background-color: #f0fdf4 !important;
+  color: #16a34a !important;
+  border-color: #bbf7d0 !important;
+  font-weight: 600 !important;
+}

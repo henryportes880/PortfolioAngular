@@ -1,0 +1,35 @@
+<div class="header-secao">
+  <h2>Iniciar uma conversa</h2>
+  <p>Tem uma proposta ou dúvida? Fique à vontade para mandar uma mensagem.</p>
+</div>
+
+<mat-card>
+  <mat-card-content>
+    <form class="formulario-premium">
+      <div class="linha-dupla">
+        <mat-form-field appearance="outline">
+          <mat-label>Seu Nome</mat-label>
+          <input matInput placeholder="Ex: Henry Portes">
+          <mat-icon matSuffix class="icone-foco">person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>E-mail Corporativo</mat-label>
+          <input matInput type="email" placeholder="Ex: henry@exemplo.com">
+          <mat-icon matSuffix class="icone-foco">mail</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="campo-total">
+        <mat-label>Mensagem</mat-label>
+        <textarea matInput rows="5" placeholder="Como posso te ajudar? Detalhe sua ideia aqui..."></textarea>
+      </mat-form-field>
+
+      <div class="acoes-form">
+        <button mat-flat-button class="btn-enviar-premium" type="submit">
+          Enviar Mensagem <mat-icon>send</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

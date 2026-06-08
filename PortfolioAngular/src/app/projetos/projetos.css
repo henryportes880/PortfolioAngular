@@ -1,0 +1,117 @@
+/* ==========================================================================
+   CABEÇALHO DA SEÇÃO
+   ========================================================================== */
+.header-secao {
+  margin-bottom: 32px;
+}
+
+.header-secao h2 {
+  font-size: 28px; /* Aumentado ligeiramente para alinhar com o peso visual da home */
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.header-secao p {
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   GRADE DE PROJETOS MINI-CARDS
+   ========================================================================== */
+.grade-projetos-premium {
+  display: grid;
+  /* Mantém o ótimo sistema responsivo automático que você já tinha configurado */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+/* ==========================================================================
+   ESTILIZAÇÃO DOS CARDS REFINADOS (GLASS / CLEAN STYLE)
+   ========================================================================== */
+.card-projeto-premium {
+  background: #ffffff !important; /* Cards brancos para contrastar com o fundo cinza claro */
+  border-radius: 16px !important; /* Bordas suaves e modernas */
+  border: 1px solid rgba(226, 232, 240, 0.8) !important; /* Borda bem fina */
+  box-shadow: 0 4px 10px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02) !important; /* Sombra levíssima */
+  padding: 28px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Efeito dinâmico premium: o card flutua e a sombra suaviza ao passar o mouse */
+.card-projeto-premium:hover {
+  transform: translateY(-5px);
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.04), 0 10px 10px -5px rgba(0, 0, 0, 0.02) !important;
+}
+
+/* ==========================================================================
+   ELEMENTOS INTERNOS DOS CARDS
+   ========================================================================== */
+.icone-projeto {
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Cores dos badges dos ícones adaptadas para tons pastéis profissionais */
+.container-angular { 
+  background-color: #e0e7ff !important; /* Sintonizado com o roxo pastel da home */
+  color: #4f46e5 !important; 
+}
+
+.container-design { 
+  background-color: #f3e8ff !important; 
+  color: #9333ea !important; 
+}
+
+.titulo-p { 
+  font-size: 18px !important; 
+  font-weight: 700 !important; 
+  color: #0f172a !important;
+}
+
+.stack-p { 
+  font-size: 12px !important; 
+  color: #64748b !important;
+  margin-bottom: 12px !important; 
+}
+
+.card-projeto-premium mat-card-content p {
+  color: #475569;
+  line-height: 1.6;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+/* Link de ação do projeto combinando com o roxo padrão */
+.btn-projeto-link {
+  color: #4f46e5 !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  padding: 0 !important;
+  transition: opacity 0.2s ease;
+}
+
+.btn-projeto-link:hover {
+  opacity: 0.8;
+  background: transparent !important;
+}
+
+.btn-projeto-link mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+  vertical-align: middle;
+}

@@ -1,0 +1,117 @@
+/* ==========================================================================
+   CABEÇALHO DA SEÇÃO (IDÊNTICO AO DE PROJETOS E SOBRE)
+   ========================================================================== */
+.header-secao {
+  margin-bottom: 32px;
+}
+
+.header-secao h2 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.header-secao p {
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   ESTRUTURA COMPACTA E INTEGRADA (SEM O CARD FORÇADO)
+   ========================================================================== */
+mat-card {
+  border: none !important;
+  background: transparent !important; /* Remove o fundo branco pesado */
+  box-shadow: none !important;        /* Remove as sombras quadradas */
+  padding: 0 !important;              /* Alinha perfeitamente com as margens do main */
+}
+
+.formulario-premium {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Aumentado ligeiramente para dar mais respiro entre as linhas */
+  margin-top: 16px;
+}
+
+.linha-dupla {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+.linha-dupla mat-form-field {
+  flex: 1;
+}
+
+.campo-total {
+  width: 100%;
+}
+
+/* ==========================================================================
+   ESTILIZAÇÃO DOS INPUTS (ESTILO GLASS / CLEAN)
+   ========================================================================== */
+/* Deixa o fundo dos inputs com um cinza bem clarinho e elegante */
+::v-deep .mat-mdc-text-field-wrapper {
+  background-color: #ffffff !important; /* Fundo branco puro para os campos se destacarem no fundo cinza */
+  border-radius: 12px !important;       /* Cantos arredondados nos inputs */
+  transition: all 0.2s ease;
+}
+
+/* Remove aquelas bordas pretas pesadas nativas do Material */
+::v-deep .mdc-notched-outline__leading,
+::v-deep .mdc-notched-outline__notch,
+::v-deep .mdc-notched-outline__trailing {
+  border-color: #e2e8f0 !important; /* Borda cinza bem sutil */
+}
+
+/* Cor dos ícones dentro dos inputs */
+.icone-foco {
+  color: #94a3b8;
+}
+
+/* ==========================================================================
+   BOTÃO ENVIAR (COMBINANDO COM O ROXO PASTEL DO INÍCIO)
+   ========================================================================== */
+.acoes-form {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.btn-enviar-premium {
+  background-color: #e0e7ff !important; /* Roxo pastel idêntico ao da Home */
+  color: #4f46e5 !important;            /* Texto roxo forte */
+  border-radius: 12px !important;
+  padding: 14px 28px !important;        /* Altura anatômica e moderna */
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-enviar-premium:hover {
+  background-color: #c7d2fe !important; /* Efeito hover suave */
+}
+
+.btn-enviar-premium mat-icon {
+  margin-left: 6px;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE (CELULAR)
+   ========================================================================== */
+@media (max-width: 600px) {
+  .linha-dupla {
+    flex-direction: column;
+    gap: 0; /* No celular, os campos ficam um embaixo do outro */
+  }
+  
+  .btn-enviar-premium {
+    width: 100%; /* Botão ocupa a largura toda no celular */
+    justify-content: center;
+  }
+}

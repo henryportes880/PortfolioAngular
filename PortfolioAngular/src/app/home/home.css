@@ -1,0 +1,87 @@
+/* Remove qualquer preenchimento padrão de header e foca em um layout integrado */
+.card-hero {
+  border: none !important;
+  background: transparent !important; /* Deixa o card invisível para usar o fundo suave do main */
+  box-shadow: none !important; /* Sem sombras pesadas na home, deixando o visual leve */
+}
+
+/* A tag menor acima do título principal */
+.tag-status {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #4f46e5; /* Roxo padrão */
+  margin-bottom: 12px;
+}
+
+/* O título agora tem peso e destaque de verdade */
+.titulo-principal {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #0f172a; /* Quase preto */
+  margin: 0 0 16px 0;
+  line-height: 1.1;
+}
+
+/* Um parágrafo fluido, que flui naturalmente sem listar coisas óbvias */
+.paragrafo-impacto {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #475569; /* Cinza elegante */
+  max-width: 600px;
+  margin-bottom: 32px;
+}
+
+/* Alinhamento dos botões */
+.botoes-home {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn-principal {
+  background-color: #e0e7ff !important;
+  color: #4f46e5 !important;
+  border-radius: 12px !important;
+  padding: 14px 24px !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-principal:hover {
+  background-color: #c7d2fe !important;
+}
+
+.btn-secundario {
+  border: 1px solid #cbd5e1 !important;
+  color: #475569 !important;
+  background-color: #ffffff !important;
+  border-radius: 12px !important;
+  padding: 14px 24px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-secundario:hover {
+  background-color: #f8fafc !important;
+}
+
+mat-icon {
+  margin-right: 6px;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+/* Ajuste fino para o celular não quebrar o título */
+@media (max-width: 600px) {
+  .titulo-principal {
+    font-size: 32px;
+  }
+  .paragrafo-impacto {
+    font-size: 16px;
+  }
+}

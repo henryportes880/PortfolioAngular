@@ -1,0 +1,74 @@
+<!-- <h1>{{ title() }}</h1>
+
+<p>Olá, meu nome é Henry Portes.</p>
+<p>Este é meu portfólio em Angular.</p>
+
+<mat-list>
+
+  <mat-list-item>
+    <span matListItemTitle>Sobre Mim</span>
+    <span matListItemLine>
+      Estudante de desenvolvimento web focado em front-end.
+    </span>
+    <span matListItemLine>
+      Tenho interesse em Angular, TypeScript, HTML e CSS.
+    </span>
+    <span matListItemLine>
+      Estou construindo projetos para evoluir minhas habilidades.
+    </span>
+  </mat-list-item>
+
+  <mat-list-item>
+    <span matListItemTitle>Projetos</span>
+    <span matListItemLine>Portfólio pessoal em Angular</span>
+    <span matListItemLine>Landing page responsiva</span>
+    <span matListItemLine>Projeto de estudo com Angular Material</span>
+  </mat-list-item>
+
+  <mat-list-item>
+    <span matListItemTitle>Contato</span>
+    <span matListItemLine>Email: henry@email.com</span>
+    <span matListItemLine>GitHub: github.com/henryportes</span>
+    <span matListItemLine>LinkedIn: linkedin.com/in/henryportes</span>
+  </mat-list-item>
+
+</mat-list> -->
+
+<mat-sidenav-container class="container-principal">
+  <mat-sidenav #sidenav mode="over" class="menu-lateral">
+    <div class="links-lateral">
+      <a mat-button routerLink="/" routerLinkActive="ativo" [routerLinkActiveOptions]="{ exact: true }" (click)="sidenav.close()">
+        <mat-icon>home</mat-icon> Início
+      </a>
+      <a mat-button routerLink="/sobre" routerLinkActive="ativo" (click)="sidenav.close()">
+        <mat-icon>person</mat-icon> Sobre
+      </a>
+      <a mat-button routerLink="/projetos" routerLinkActive="ativo" (click)="sidenav.close()">
+        <mat-icon>build</mat-icon> Projetos
+      </a>
+      <a mat-button routerLink="/contato" routerLinkActive="ativo" (click)="sidenav.close()">
+        <mat-icon>email</mat-icon> Contato
+      </a>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      
+      <span>Meu Portfólio</span>
+      <span class="espacador"></span>
+      
+      <a mat-button routerLink="/" routerLinkActive="ativo" [routerLinkActiveOptions]="{ exact: true }">Início</a>
+      <a mat-button routerLink="/sobre" routerLinkActive="ativo">Sobre</a>
+      <a mat-button routerLink="/projetos" routerLinkActive="ativo">Projetos</a>
+      <a mat-button routerLink="/contato" routerLinkActive="ativo">Contato</a>
+    </mat-toolbar>
+
+    <main style="padding: 24px;">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

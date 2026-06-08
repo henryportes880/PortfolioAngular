@@ -1,0 +1,99 @@
+/* ==========================================================================
+   1. LAYOUT PRINCIPAL (Sidenav & Containers)
+   ========================================================================== */
+
+/* Faz o container ocupar a tela toda */
+mat-sidenav-container {
+  height: 100vh;
+  background-color: #f4f6f9 !important; /* Cor de fundo suave para o app todo */
+}
+
+/* Estiliza a barra lateral */
+.menu-lateral {
+  width: 240px; /* Um pouco mais largo melhora o espaçamento de menus com ícones */
+  background-color: #ffffff; /* Fundo branco limpo combina melhor com o padrão Material */
+  border-right: 1px solid #e2e8f0;
+  padding: 24px 16px;
+}
+
+/* Alinha os links do menu lateral em coluna */
+.links-lateral {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Aumentado ligeiramente para melhorar a área de clique no mobile */
+}
+
+.links-lateral a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-start;
+  width: 100%;
+  border-radius: 8px; /* Cantos arredondados nos botões do menu */
+  padding: 8px 12px !important;
+  color: #4a5568 !important;
+  transition: background-color 0.2s ease;
+}
+
+.links-lateral a:hover {
+  background-color: #f7fafc !important;
+}
+
+/* ==========================================================================
+   2. NAVBAR / TOOLBAR
+   ========================================================================== */
+
+mat-toolbar {
+  background-color: #ffffff !important;
+  color: #1a202c !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Mantém o espaçador da toolbar */
+.espacador {
+  flex: 1 1 auto;
+}
+
+/* Classe de link ativo universal (funciona na toolbar e na lateral) */
+.ativo {
+  background-color: #eef2ff !important; /* Azul bem suave de destaque */
+  color: #4f46e5 !important;            /* Texto em azul moderno */
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   3. CONTEÚDO CENTRAL (Main & Cards)
+   ========================================================================== */
+
+/* Configuração da área onde as páginas aparecem (Main) */
+main {
+  max-width: 700px;
+  width: 100%;             /* Garante que ocupe a largura correta em telas menores */
+  box-sizing: border-box;  /* Evita que o padding altere o tamanho final do elemento */
+  margin: 40px auto;
+  padding: 0 20px !important; 
+}
+
+/* Deixa o Card mais elegante e com efeito sutil de profundidade */
+main mat-card {
+  background: #ffffff !important;
+  border-radius: 16px !important; /* Bordas ligeiramente mais arredondadas (estilo moderno) */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important; 
+  border: 1px solid rgba(0, 0, 0, 0.04) !important;
+  padding: 32px !important; /* Mais respiro interno para o texto e inputs respirarem */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ==========================================================================
+   4. AJUSTE DE RESPONSIVIDADE (Celular)
+   ========================================================================== */
+@media (max-width: 600px) {
+  main {
+    margin: 16px auto; /* Diminui a margem no topo em telas pequenas */
+  }
+  
+  main mat-card {
+    padding: 20px !important; /* Reduz o espaçamento interno do card no celular */
+  }
+}
