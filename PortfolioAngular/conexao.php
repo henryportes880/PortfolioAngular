@@ -1,12 +1,11 @@
 <?php
 // conexao.php - conexao PDO com o MariaDB (reutilizavel)
-$host     = 'localhost';
-$db       = 'dwii_db';
-$user     = 'dwii_user';
-$pass     = 'dwii2026';
+$host    = 'localhost';
+$db      = 'dwii_db';
+$user    = 'dwii_user';
+$pass    = 'dwii2026';
 $charset = 'utf8mb4';
 
-// host 'localhost' conecta pelo socket local (casa com o usuario @'localhost')
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 
 $opcoes = [
@@ -14,4 +13,15 @@ $opcoes = [
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 ];
 
-$pdo = new PDO($dsn, $user, $pass, $opcoes);
+try {
+    $pdo = new PDO($dsn, $user, $pass, $opcoes);
+} catch (PDOException $e) {
+    // Retorna a mensagem do banco em formato JSON em vez de quebrar com Erro 500
+    http_response_code(500);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode([
+        'erro' => 'Falha ao conectar a base de dados MariaDB.',
+        'detalhes' => $e->getMessage()
+    ]);
+    exit; // Interrompe o script aqui para nao executar queries sem conexao
+}

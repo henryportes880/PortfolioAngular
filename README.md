@@ -8,12 +8,13 @@ Este projeto é um portfólio pessoal desenvolvido com **Angular**, **PHP** e **
 
 O portfólio apresenta informações organizadas em seções como:
 
-* Sobre mim
-* Projetos
-* Tecnologias
-* Contato
+* **Início**
+* **Sobre mim**
+* **Projetos** (consumindo dados reais da API)
+* **Catálogo de Tecnologias** (consumindo dados reais da API)
+* **Contato**
 
-Os dados são consumidos por uma API REST desenvolvida em PHP e armazenados em um banco de dados MariaDB.
+Os dados exibidos nas telas de Projetos e Catálogo são consumidos de uma API REST desenvolvida em PHP e armazenados em um banco de dados MariaDB.
 
 ---
 
@@ -21,11 +22,10 @@ Os dados são consumidos por uma API REST desenvolvida em PHP e armazenados em u
 
 ### Front-end
 
-* Angular 17
+* Angular
 * Angular Material
 * TypeScript
-* HTML5
-* CSS3
+* HTML5 / CSS3
 
 ### Back-end
 
@@ -37,11 +37,11 @@ Os dados são consumidos por uma API REST desenvolvida em PHP e armazenados em u
 
 ## 📦 Ambiente
 
-* Node.js 20.x.x
-* npm 10.x.x
-* Angular CLI 17.x.x
-* PHP 8.x.x
-* MariaDB 10.x.x
+* Node.js
+* npm
+* Angular CLI
+* PHP 8.x
+* MariaDB / MySQL
 
 ---
 
@@ -50,40 +50,4 @@ Os dados são consumidos por uma API REST desenvolvida em PHP e armazenados em u
 ### 1. Clonar o repositório
 
 ```bash
-git clone https://seu-repositorio-aqui.git
-```
-
-### 2. Configurar o banco de dados
-
-Importe o arquivo `sql/setup.sql` em seu servidor MariaDB e ajuste as credenciais no arquivo `conexao.php`.
-
-### 3. Executar a API
-
-Na raiz do projeto, execute:
-
-```bash
-php -S localhost:8000
-```
-
-### 4. Executar o front-end
-
-Na pasta do Angular:
-
-```bash
-npm install
-ng serve
-```
-
-Acesse:
-
-```text
-http://localhost:4200
-```
-
----
-
-## 👨‍💻 Autor
-
-**Henry Portes**
-
-Projeto desenvolvido para a disciplina de **Desenvolvimento Web II** – IFPR.
+git clone [https://github.com/henryportes/seu-repositorio.git](https://github.com/henryportes/seu-repositorio.git)

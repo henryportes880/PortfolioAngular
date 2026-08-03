@@ -1,44 +1,26 @@
-<div class="header-secao">
-  <h2>Projetos em Destaque</h2>
-  <p>Aplicações práticas desenvolvidas para consolidação de conceitos de engenharia web.</p>
-</div>
+@if (carregando) {
+  <p>Carregando projetos...</p>
+}
 
-<div class="grade-projetos-premium">
+@if (erro) {
+  <p>{{ erro }}</p>
+}
 
-  <mat-card class="card-projeto-premium">
-    <div class="icone-projeto container-angular">
-      <mat-icon>layers</mat-icon>
-    </div>
+@if (!carregando && projetos.length === 0) {
+  <p>Nenhum projeto publicado ainda.</p>
+}
+
+@for (p of projetos; track p.id) {
+  <mat-card style="margin-bottom: 12px;">
     <mat-card-header>
-      <mat-card-title class="titulo-p">Portfólio SPA Modular</mat-card-title>
-      <mat-card-subtitle class="stack-p">Angular • Material Design • SPA</mat-card-subtitle>
+      <mat-card-title>{{ p.nome }}</mat-card-title>
+      <mat-card-subtitle>{{ p.tecnologias }} - {{ p.ano }}</mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content>
-      <p>Desenvolvimento deste ecossistema completo usando arquitetura standalone, controle avançado de rotas com Sidenav reativa.</p>
-    </mat-card-content>
+    <mat-card-content>{{ p.descricao }}</mat-card-content>
     <mat-card-actions>
-      <a mat-button class="btn-projeto-link" href="https://github.com/henryportes" target="_blank">
-        Acessar Repositório <mat-icon>open_in_new</mat-icon>
-      </a>
+      @if (p.link_github) {
+        <a mat-button [href]="p.link_github" target="_blank" rel="noopener">Ver no GitHub</a>
+      }
     </mat-card-actions>
   </mat-card>
-
-  <mat-card class="card-projeto-premium">
-    <div class="icone-projeto container-design">
-      <mat-icon>devices</mat-icon>
-    </div>
-    <mat-card-header>
-      <mat-card-title class="titulo-p">Landing Page Fluida</mat-card-title>
-      <mat-card-subtitle class="stack-p">HTML5 • CSS Grid • Semântica</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>Interface responsiva focada em altíssima performance, acessibilidade e estilização fluida sem frameworks externos.</p>
-    </mat-card-content>
-    <mat-card-actions>
-      <a mat-button class="btn-projeto-link" href="https://github.com/henryportes" target="_blank">
-        Acessar Repositório <mat-icon>open_in_new</mat-icon>
-      </a>
-    </mat-card-actions>
-  </mat-card>
-
-</div>
+}
