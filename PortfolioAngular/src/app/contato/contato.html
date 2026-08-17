@@ -1,35 +1,34 @@
-<div class="header-secao">
-  <h2>Iniciar uma conversa</h2>
-  <p>Tem uma proposta ou dúvida? Fique à vontade para mandar uma mensagem.</p>
-</div>
+<section class="contato-container">
+  <h2>Contato</h2>
 
-<mat-card>
-  <mat-card-content>
-    <form class="formulario-premium">
-      <div class="linha-dupla">
-        <mat-form-field appearance="outline">
-          <mat-label>Seu Nome</mat-label>
-          <input matInput placeholder="Ex: Henry Portes">
-          <mat-icon matSuffix class="icone-foco">person</mat-icon>
-        </mat-form-field>
+  <div *ngIf="mensagemSucesso" style="color: green; margin-bottom: 10px;">
+    {{ mensagemSucesso }}
+  </div>
 
-        <mat-form-field appearance="outline">
-          <mat-label>E-mail Corporativo</mat-label>
-          <input matInput type="email" placeholder="Ex: henry@exemplo.com">
-          <mat-icon matSuffix class="icone-foco">mail</mat-icon>
-        </mat-form-field>
-      </div>
+  <div *ngIf="errosValidacao.length > 0" style="color: red; margin-bottom: 10px;">
+    <ul>
+      <li *ngFor="let erro of errosValidacao">{{ erro }}</li>
+    </ul>
+  </div>
 
-      <mat-form-field appearance="outline" class="campo-total">
-        <mat-label>Mensagem</mat-label>
-        <textarea matInput rows="5" placeholder="Como posso te ajudar? Detalhe sua ideia aqui..."></textarea>
-      </mat-form-field>
+  <form (ngSubmit)="onSubmit()" #formContato="ngForm">
+    <div>
+      <label>Nome:</label><br>
+      <input type="text" name="nome" [(ngModel)]="dados.nome" required>
+    </div>
 
-      <div class="acoes-form">
-        <button mat-flat-button class="btn-enviar-premium" type="submit">
-          Enviar Mensagem <mat-icon>send</mat-icon>
-        </button>
-      </div>
-    </form>
-  </mat-card-content>
-</mat-card>
+    <div>
+      <label>E-mail:</label><br>
+      <input type="email" name="email" [(ngModel)]="dados.email" required>
+    </div>
+
+    <div>
+      <label>Mensagem:</label><br>
+      <textarea name="mensagem" [(ngModel)]="dados.mensagem" rows="4" required></textarea>
+    </div>
+
+    <button type="submit" [disabled]="!formContato.form.valid || enviando">
+      {{ enviando ? 'Enviando...' : 'Enviar' }}
+    </button>
+  </form>
+</section>
