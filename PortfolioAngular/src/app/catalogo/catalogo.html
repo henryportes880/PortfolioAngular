@@ -1,12 +1,126 @@
-@if (carregando) { <p>Carregando catálogo...</p> }
-@if (erro) { <p>{{ erro }}</p> }
+<div class="container-catalogo">
 
-@for (t of tecnologias; track t.id) {
-  <mat-card style="margin-bottom: 12px;">
-    <mat-card-header>
-      <mat-card-title>{{ t.nome }}</mat-card-title>
-      <mat-card-subtitle>{{ t.categoria }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>{{ t.descricao }}</mat-card-content>
-  </mat-card>
-}
+  <!-- CABEÇALHO -->
+  <header class="header-secao">
+
+    <span class="section-eyebrow">TECNOLOGIAS</span>
+
+    <h2>Catálogo</h2>
+
+    <p>
+      Tecnologias, ferramentas e conhecimentos que fazem parte
+      da minha jornada como desenvolvedor.
+    </p>
+
+  </header>
+
+
+  <!-- CARREGANDO -->
+  @if (carregando) {
+    <div class="state-message">
+      <div class="loading-spinner"></div>
+      <span>Carregando catálogo...</span>
+    </div>
+  }
+
+
+  <!-- ERRO -->
+  @if (erro) {
+    <div class="state-message error">
+      <span class="error-icon">!</span>
+      <span>{{ erro }}</span>
+    </div>
+  }
+
+
+  <!-- CATÁLOGO -->
+  @if (!carregando && !erro) {
+
+    <section class="catalogo-section">
+
+      <div class="catalogo-header">
+
+        <div>
+          <span class="section-eyebrow">STACK</span>
+          <h3>Tecnologias que utilizo</h3>
+        </div>
+
+        <span class="tech-count">
+          {{ tecnologias.length }}
+          {{ tecnologias.length === 1 ? 'tecnologia' : 'tecnologias' }}
+        </span>
+
+      </div>
+
+
+      <div class="grade-tecnologias">
+
+        @for (t of tecnologias; track t.id) {
+
+          <mat-card class="card-tecnologia">
+
+            <div class="tecnologia-top">
+
+              <div class="tecnologia-icon">
+                <span>&lt;/&gt;</span>
+              </div>
+
+              <span class="categoria-badge">
+                {{ t.categoria }}
+              </span>
+
+            </div>
+
+
+            <div class="tecnologia-content">
+
+              <h3>
+                {{ t.nome }}
+              </h3>
+
+              <p>
+                {{ t.descricao }}
+              </p>
+
+            </div>
+
+
+            <div class="tecnologia-footer">
+
+              <span class="status-indicator"></span>
+
+              <span>Conhecimento</span>
+
+            </div>
+
+          </mat-card>
+
+        }
+
+      </div>
+
+    </section>
+
+  }
+
+
+  <!-- CATÁLOGO VAZIO -->
+  @if (!carregando && !erro && tecnologias.length === 0) {
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+        &lt;/&gt;
+      </div>
+
+      <h3>Nenhuma tecnologia cadastrada</h3>
+
+      <p>
+        As tecnologias cadastradas aparecerão aqui.
+      </p>
+
+    </div>
+
+  }
+
+</div>

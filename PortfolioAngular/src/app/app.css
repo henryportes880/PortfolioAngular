@@ -1,99 +1,350 @@
 /* ==========================================================================
-   1. LAYOUT PRINCIPAL (Sidenav & Containers)
+   APP — LAYOUT PRINCIPAL (LIGHT MODE)
    ========================================================================== */
 
-/* Faz o container ocupar a tela toda */
-mat-sidenav-container {
-  height: 100vh;
-  background-color: #f4f6f9 !important; /* Cor de fundo suave para o app todo */
+.app-container {
+  min-height: 100vh;
+  background: var(--bg);
 }
 
-/* Estiliza a barra lateral */
+
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+
 .menu-lateral {
-  width: 240px; /* Um pouco mais largo melhora o espaçamento de menus com ícones */
-  background-color: #ffffff; /* Fundo branco limpo combina melhor com o padrão Material */
-  border-right: 1px solid #e2e8f0;
-  padding: 24px 16px;
-}
+  width: var(--sidebar-width);
 
-/* Alinha os links do menu lateral em coluna */
-.links-lateral {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(248, 250, 252, 0.98)
+    );
+
+  border-right: 1px solid var(--border);
+
   display: flex;
   flex-direction: column;
-  gap: 12px; /* Aumentado ligeiramente para melhorar a área de clique no mobile */
 }
 
-.links-lateral a {
+
+/* ==========================================================================
+   CABEÇALHO DA SIDEBAR
+   ========================================================================== */
+
+.drawer-cabecalho {
   display: flex;
   align-items: center;
   gap: 12px;
-  justify-content: flex-start;
+
+  padding: 24px 20px;
+}
+
+.logo-mark {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: var(--gradient);
+  color: white;
+
+  box-shadow: var(--shadow-primary);
+}
+
+.logo-mark mat-icon {
+  font-size: 21px;
+  width: 21px;
+  height: 21px;
+}
+
+.logo-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.logo-texto strong {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.logo-texto span {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+
+/* ==========================================================================
+   DIVISOR
+   ========================================================================== */
+
+mat-divider {
+  border-color: var(--border) !important;
+}
+
+
+/* ==========================================================================
+   LINKS LATERAIS
+   ========================================================================== */
+
+.links-lateral {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  padding: 20px 12px;
+}
+
+.links-lateral a {
   width: 100%;
-  border-radius: 8px; /* Cantos arredondados nos botões do menu */
-  padding: 8px 12px !important;
-  color: #4a5568 !important;
-  transition: background-color 0.2s ease;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  gap: 12px;
+
+  padding: 0 14px;
+
+  border-radius: 10px;
+
+  color: var(--text-muted);
+
+  font-size: 13px;
+  font-weight: 500;
+
+  transition:
+    background var(--transition),
+    color var(--transition),
+    transform var(--transition);
+}
+
+.links-lateral a mat-icon {
+  color: var(--text-dim);
+
+  font-size: 19px;
+  width: 19px;
+  height: 19px;
+
+  transition: color var(--transition);
 }
 
 .links-lateral a:hover {
-  background-color: #f7fafc !important;
+  background: rgba(15, 23, 42, 0.035);
+  color: var(--text);
+  transform: translateX(2px);
 }
+
+.links-lateral a:hover mat-icon {
+  color: var(--primary);
+}
+
+.links-lateral a.ativo {
+  background: var(--gradient-soft);
+
+  color: var(--primary-dark);
+
+  border: 1px solid rgba(99, 102, 241, 0.18);
+}
+
+.links-lateral a.ativo mat-icon {
+  color: var(--primary);
+}
+
 
 /* ==========================================================================
-   2. NAVBAR / TOOLBAR
+   FOOTER SIDEBAR
    ========================================================================== */
 
-mat-toolbar {
-  background-color: #ffffff !important;
-  color: #1a202c !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-  border-bottom: 1px solid #e2e8f0;
+.drawer-footer {
+  margin-top: auto;
+  padding: 20px;
 }
 
-/* Mantém o espaçador da toolbar */
-.espacador {
-  flex: 1 1 auto;
+.status-online {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 10px;
+  color: var(--text-dim);
 }
 
-/* Classe de link ativo universal (funciona na toolbar e na lateral) */
-.ativo {
-  background-color: #eef2ff !important; /* Azul bem suave de destaque */
-  color: #4f46e5 !important;            /* Texto em azul moderno */
+.status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+}
+
+
+/* ==========================================================================
+   TOOLBAR
+   ========================================================================== */
+
+.toolbar {
+  height: var(--toolbar-height);
+
+  background: rgba(255, 255, 255, 0.82) !important;
+
+  backdrop-filter: blur(18px);
+
+  border-bottom: 1px solid var(--border);
+
+  color: var(--text) !important;
+
+  position: sticky;
+  top: 0;
+
+  z-index: 100;
+
+  padding: 0 28px;
+}
+
+
+/* ==========================================================================
+   BRAND DA TOOLBAR
+   ========================================================================== */
+
+.toolbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  font-size: 13px;
   font-weight: 600;
+  color: var(--text-secondary);
 }
+
+.toolbar-ponto {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--primary);
+
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.55);
+}
+
 
 /* ==========================================================================
-   3. CONTEÚDO CENTRAL (Main & Cards)
+   LINKS DO TOPO
    ========================================================================== */
 
-/* Configuração da área onde as páginas aparecem (Main) */
-main {
-  max-width: 700px;
-  width: 100%;             /* Garante que ocupe a largura correta em telas menores */
-  box-sizing: border-box;  /* Evita que o padding altere o tamanho final do elemento */
-  margin: 40px auto;
-  padding: 0 20px !important; 
+.links-topo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-/* Deixa o Card mais elegante e com efeito sutil de profundidade */
-main mat-card {
-  background: #ffffff !important;
-  border-radius: 16px !important; /* Bordas ligeiramente mais arredondadas (estilo moderno) */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important; 
-  border: 1px solid rgba(0, 0, 0, 0.04) !important;
-  padding: 32px !important; /* Mais respiro interno para o texto e inputs respirarem */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.links-topo a {
+  height: 38px;
+
+  padding: 0 13px;
+
+  border-radius: 9px;
+
+  color: var(--text-muted);
+
+  font-size: 12px;
+  font-weight: 500;
+
+  transition:
+    color var(--transition),
+    background var(--transition);
 }
+
+.links-topo a:hover {
+  color: var(--text);
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.links-topo a.ativo {
+  color: var(--primary-dark);
+
+  background: rgba(99, 102, 241, 0.08);
+
+  border: 1px solid rgba(99, 102, 241, 0.18);
+}
+
 
 /* ==========================================================================
-   4. AJUSTE DE RESPONSIVIDADE (Celular)
+   CONTEÚDO
    ========================================================================== */
-@media (max-width: 600px) {
-  main {
-    margin: 16px auto; /* Diminui a margem no topo em telas pequenas */
+
+.conteudo {
+  width: 100%;
+  min-height: calc(100vh - var(--toolbar-height));
+
+  padding: 48px 32px 80px;
+
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(99, 102, 241, 0.06),
+      transparent 32%
+    );
+}
+
+
+/* ==========================================================================
+   ESPAÇADOR
+   ========================================================================== */
+
+.espacador {
+  flex: 1;
+}
+
+
+/* ==========================================================================
+   HAMBÚRGUER
+   ========================================================================== */
+
+.btn-hamburguer {
+  margin-right: 10px;
+
+  color: var(--text-secondary) !important;
+}
+
+
+/* ==========================================================================
+   RESPONSIVIDADE
+   ========================================================================== */
+
+@media (max-width: 900px) {
+
+  .menu-lateral {
+    width: 270px;
   }
-  
-  main mat-card {
-    padding: 20px !important; /* Reduz o espaçamento interno do card no celular */
+
+  .conteudo {
+    padding: 36px 22px 60px;
   }
+
+}
+
+
+@media (max-width: 599px) {
+
+  .toolbar {
+    padding: 0 14px;
+  }
+
+  .conteudo {
+    padding: 28px 16px 50px;
+  }
+
 }

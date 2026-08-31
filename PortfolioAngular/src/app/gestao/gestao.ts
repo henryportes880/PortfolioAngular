@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ProjetoService, Projeto } from '../projeto.service';
 
 @Component({
-  selector: 'app-projetos',
+  selector: 'app-gestao',
   standalone: true,
   imports: [
     CommonModule,
@@ -20,10 +20,10 @@ import { ProjetoService, Projeto } from '../projeto.service';
     MatButtonModule,
     MatIconModule
   ],
-  templateUrl: './projetos.html',
-  styleUrl: './projetos.css'
+  templateUrl: './gestao.html',
+  styleUrl: './gestao.css'
 })
-export class Projetos implements OnInit {
+export class Gestao implements OnInit {
   private service = inject(ProjetoService);
 
   projetos: Projeto[] = [];

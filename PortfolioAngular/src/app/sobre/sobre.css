@@ -1,107 +1,361 @@
 /* ==========================================================================
-   CABEÇALHO DA SEÇÃO (IDÊNTICO AO DE PROJETOS)
+   SOBRE
    ========================================================================== */
+
+.sobre {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+
+/* ==========================================================================
+   CABEÇALHO
+   ========================================================================== */
+
 .header-secao {
-  margin-bottom: 32px;
+  margin-bottom: 42px;
+}
+
+.section-label {
+  display: inline-block;
+
+  margin-bottom: 12px;
+
+  color: var(--primary);
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
 }
 
 .header-secao h2 {
-  font-size: 28px;
+  margin: 0 0 14px;
+
+  color: var(--text);
+
+  font-size: clamp(34px, 5vw, 48px);
+
+  line-height: 1.08;
+
+  letter-spacing: -0.045em;
+
   font-weight: 800;
-  letter-spacing: -0.025em;
-  color: #0f172a;
-  margin-bottom: 6px;
+}
+
+.header-secao h2 span {
+  background: var(--gradient);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
 }
 
 .header-secao p {
-  color: #64748b;
-  font-size: 16px;
-  line-height: 1.5;
-}
+  max-width: 600px;
 
-/* ==========================================================================
-   DESMANCHANDO O CARD PAI (INTEGRAÇÃO TOTAL COM O APP)
-   ========================================================================== */
-mat-card {
-  border: none !important;
-  background: transparent !important; /* Remove o bloco branco forçado */
-  box-shadow: none !important;        /* Remove as sombras quadradas pesadas */
-  padding: 0 !important;              /* Alinha o texto perfeitamente com a margem esquerda */
-}
+  margin: 0;
 
-/* ==========================================================================
-   TIPOGRAFIA E BIOGRAFIA
-   ========================================================================== */
-.biografia {
-  font-size: 16px;
-  line-height: 1.8;
-  color: #334155; /* Cinza escuro de fácil leitura */
-  margin-bottom: 32px;
-}
+  color: var(--text-muted);
 
-/* Divisor elegante e ultra-sutil */
-mat-divider {
-  margin: 16px 0 32px 0 !important;
-  border-top-color: #e2e8f0 !important; /* Ajustado para dar o contraste ideal no fundo cinza */
-}
-
-/* ==========================================================================
-   SEÇÃO DE SKILLS / HABILIDADES
-   ========================================================================== */
-.subsecao-titulo {
-  font-size: 20px; /* Um pouco mais encorpado para dar hierarquia visual */
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #0f172a;
-  margin-bottom: 6px;
-}
-
-.subsecao-descricao {
   font-size: 15px;
-  color: #64748b;
-  margin-bottom: 20px;
+
+  line-height: 1.7;
 }
 
-.tags-skills {
-  margin-top: 16px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
 
 /* ==========================================================================
-   CHIPS / TAGS MINI-BADGES REFINADAS
+   GRID
    ========================================================================== */
-.chip-tech {
-  background-color: #ffffff !important; /* Fundo branco puro faz a tag saltar no fundo cinza */
-  color: #475569 !important;
-  border: 1px solid #e2e8f0 !important;
-  border-radius: 8px !important;
-  font-weight: 500 !important;
-  font-size: 13px !important;
-  padding: 6px 12px !important;
+
+.sobre-grid {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 20px;
 }
 
-/* Destaque Core (Angular, TS...) sintonizado com o roxo pastel da Home */
-.chip-tech.core {
-  background-color: #e0e7ff !important; /* Roxo suave padrão do seu app */
-  color: #4f46e5 !important;            /* Texto em roxo forte */
-  border-color: #c7d2fe !important;
-  font-weight: 600 !important;
+
+/* ==========================================================================
+   CARD
+   ========================================================================== */
+
+.content-card {
+  height: 100%;
+
+  box-sizing: border-box;
+
+  padding: 28px;
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  background: var(--surface-solid);
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    border-color var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
 }
 
-/* Destaque Design / UI sintonizado com um rosa/magenta premium */
-.chip-tech.design {
-  background-color: #fdf2f8 !important;
-  color: #db2777 !important;
-  border-color: #fbcfe8 !important;
-  font-weight: 600 !important;
+.content-card:hover {
+  transform: translateY(-3px);
+
+  border-color: var(--border-hover);
+
+  box-shadow: var(--shadow-md);
 }
 
-/* Destaque para Ferramentas (Git, GitHub, etc) */
-.chip-tech.tool {
-  background-color: #f0fdf4 !important;
-  color: #16a34a !important;
-  border-color: #bbf7d0 !important;
-  font-weight: 600 !important;
+
+/* ==========================================================================
+   ÍCONE
+   ========================================================================== */
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 20px;
+
+  border: 1px solid rgba(99, 102, 241, 0.16);
+
+  border-radius: var(--radius-sm);
+
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.card-icon mat-icon {
+  color: var(--primary);
+
+  font-size: 20px;
+
+  width: 20px;
+  height: 20px;
+}
+
+
+/* ==========================================================================
+   TEXTOS
+   ========================================================================== */
+
+.content-card h3 {
+  margin: 0 0 14px;
+
+  color: var(--text);
+
+  font-size: 20px;
+
+  font-weight: 700;
+
+  letter-spacing: -0.02em;
+}
+
+.content-card p {
+  margin: 0 0 16px;
+
+  color: var(--text-muted);
+
+  font-size: 14px;
+
+  line-height: 1.8;
+}
+
+.content-card p:last-child {
+  margin-bottom: 0;
+}
+
+.card-description {
+  margin-bottom: 22px !important;
+}
+
+
+/* ==========================================================================
+   SKILLS
+   ========================================================================== */
+
+.skills {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 9px;
+}
+
+.skill {
+  min-height: 42px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 9px 11px;
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-sm);
+
+  background: var(--bg-secondary);
+
+  color: var(--text-secondary);
+
+  font-size: 11px;
+
+  font-weight: 500;
+
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition);
+}
+
+.skill mat-icon {
+  color: var(--text-dim);
+
+  font-size: 17px;
+
+  width: 17px;
+  height: 17px;
+}
+
+.skill:hover {
+  border-color: var(--border-hover);
+
+  background: var(--surface-hover);
+
+  color: var(--text);
+}
+
+
+/* ==========================================================================
+   CORES DAS SKILLS
+   ========================================================================== */
+
+.skill.core {
+  border-color: rgba(99, 102, 241, 0.22);
+
+  background: rgba(99, 102, 241, 0.08);
+
+  color: var(--primary-dark);
+}
+
+.skill.core mat-icon {
+  color: var(--primary);
+}
+
+.skill.design {
+  border-color: rgba(219, 39, 119, 0.20);
+
+  background: rgba(219, 39, 119, 0.06);
+
+  color: #be185d;
+}
+
+.skill.design mat-icon {
+  color: #db2777;
+}
+
+.skill.tool {
+  border-color: rgba(21, 128, 61, 0.20);
+
+  background: rgba(21, 128, 61, 0.06);
+
+  color: #15803d;
+}
+
+.skill.tool mat-icon {
+  color: #16a34a;
+}
+
+
+/* ==========================================================================
+   RODAPÉ
+   ========================================================================== */
+
+.sobre-footer {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+
+  margin-top: 20px;
+}
+
+.sobre-footer > div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+
+  padding: 17px 18px;
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-md);
+
+  background: var(--bg-secondary);
+}
+
+.sobre-footer strong {
+  color: var(--text-secondary);
+
+  font-size: 10px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+}
+
+.sobre-footer span {
+  color: var(--text-muted);
+
+  font-size: 11px;
+}
+
+
+/* ==========================================================================
+   RESPONSIVIDADE
+   ========================================================================== */
+
+@media (max-width: 900px) {
+
+  .sobre-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sobre-footer {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 599px) {
+
+  .content-card {
+    padding: 22px;
+  }
+
+  .skills {
+    grid-template-columns: 1fr;
+  }
+
+  .header-secao {
+    margin-bottom: 30px;
+  }
+
 }

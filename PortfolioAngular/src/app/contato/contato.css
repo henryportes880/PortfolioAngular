@@ -1,117 +1,402 @@
 /* ==========================================================================
-   CABEÇALHO DA SEÇÃO (IDÊNTICO AO DE PROJETOS E SOBRE)
+   CONTATO — PÁGINA
    ========================================================================== */
+
+.container-contato {
+  width: min(900px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 48px 0 80px;
+}
+
+
+/* ==========================================================================
+   CABEÇALHO
+   ========================================================================== */
+
 .header-secao {
-  margin-bottom: 32px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 10px;
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .header-secao h2 {
-  font-size: 28px;
+  margin: 0 0 10px;
+  font-size: clamp(30px, 4vw, 40px);
   font-weight: 800;
-  letter-spacing: -0.025em;
-  color: #0f172a;
-  margin-bottom: 6px;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+
+  background: var(--gradient);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .header-secao p {
-  color: #64748b;
-  font-size: 16px;
+  max-width: 620px;
+  margin: 0 auto;
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+
+/* ==========================================================================
+   CARD DO FORMULÁRIO
+   ========================================================================== */
+
+.card-form {
+  position: relative;
+  overflow: hidden;
+
+  padding: 28px !important;
+
+  background: var(--surface-solid) !important;
+
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-xl) !important;
+
+  box-shadow: var(--shadow-md) !important;
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.card-form::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(99, 102, 241, 0.55),
+    rgba(168, 85, 247, 0.4),
+    transparent
+  );
+}
+
+
+/* ==========================================================================
+   CABEÇALHO DO FORMULÁRIO
+   ========================================================================== */
+
+.form-header {
+  margin-bottom: 28px;
+}
+
+.form-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.form-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+
+  color: var(--primary);
+
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+
+  border-radius: var(--radius-md);
+}
+
+.form-icon mat-icon {
+  width: 21px;
+  height: 21px;
+  font-size: 21px;
+}
+
+.form-title-wrapper h3 {
+  margin: 0 0 4px;
+
+  color: var(--text);
+  font-size: 19px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.form-title-wrapper p {
+  margin: 0;
+
+  color: var(--text-muted);
+  font-size: 13px;
   line-height: 1.5;
 }
 
-/* ==========================================================================
-   ESTRUTURA COMPACTA E INTEGRADA (SEM O CARD FORÇADO)
-   ========================================================================== */
-mat-card {
-  border: none !important;
-  background: transparent !important; /* Remove o fundo branco pesado */
-  box-shadow: none !important;        /* Remove as sombras quadradas */
-  padding: 0 !important;              /* Alinha perfeitamente com as margens do main */
-}
 
-.formulario-premium {
+/* ==========================================================================
+   FORMULÁRIO
+   ========================================================================== */
+
+.form-grid {
   display: flex;
   flex-direction: column;
-  gap: 12px; /* Aumentado ligeiramente para dar mais respiro entre as linhas */
-  margin-top: 16px;
-}
-
-.linha-dupla {
-  display: flex;
   gap: 16px;
+}
+
+.full-width {
   width: 100%;
 }
 
-.linha-dupla mat-form-field {
-  flex: 1;
-}
-
-.campo-total {
-  width: 100%;
-}
 
 /* ==========================================================================
-   ESTILIZAÇÃO DOS INPUTS (ESTILO GLASS / CLEAN)
+   ANGULAR MATERIAL — INPUTS
    ========================================================================== */
-/* Deixa o fundo dos inputs com um cinza bem clarinho e elegante */
-::v-deep .mat-mdc-text-field-wrapper {
-  background-color: #ffffff !important; /* Fundo branco puro para os campos se destacarem no fundo cinza */
-  border-radius: 12px !important;       /* Cantos arredondados nos inputs */
-  transition: all 0.2s ease;
+
+:host ::ng-deep .mat-mdc-form-field {
+  --mdc-outlined-text-field-container-shape: 10px;
 }
 
-/* Remove aquelas bordas pretas pesadas nativas do Material */
-::v-deep .mdc-notched-outline__leading,
-::v-deep .mdc-notched-outline__notch,
-::v-deep .mdc-notched-outline__trailing {
-  border-color: #e2e8f0 !important; /* Borda cinza bem sutil */
+:host ::ng-deep .mat-mdc-text-field-wrapper {
+  background: rgba(255, 255, 255, 0.85) !important;
 }
 
-/* Cor dos ícones dentro dos inputs */
-.icone-foco {
-  color: #94a3b8;
+:host ::ng-deep
+.mdc-notched-outline__leading,
+:host ::ng-deep
+.mdc-notched-outline__notch,
+:host ::ng-deep
+.mdc-notched-outline__trailing {
+  border-color: var(--border) !important;
 }
+
+:host ::ng-deep
+.mat-mdc-form-field:hover
+.mdc-notched-outline__leading,
+
+:host ::ng-deep
+.mat-mdc-form-field:hover
+.mdc-notched-outline__notch,
+
+:host ::ng-deep
+.mat-mdc-form-field:hover
+.mdc-notched-outline__trailing {
+  border-color: rgba(99, 102, 241, 0.4) !important;
+}
+
+:host ::ng-deep
+.mat-mdc-form-field.mat-focused
+.mdc-notched-outline__leading,
+
+:host ::ng-deep
+.mat-mdc-form-field.mat-focused
+.mdc-notched-outline__notch,
+
+:host ::ng-deep
+.mat-mdc-form-field.mat-focused
+.mdc-notched-outline__trailing {
+  border-color: var(--primary) !important;
+  border-width: 1px !important;
+}
+
+:host ::ng-deep
+.mat-mdc-form-field
+.mdc-text-field__input {
+  color: var(--text) !important;
+  caret-color: var(--primary) !important;
+}
+
+:host ::ng-deep
+.mat-mdc-form-field textarea {
+  color: var(--text) !important;
+}
+
+:host ::ng-deep
+.mat-mdc-form-field
+.mdc-text-field__input::placeholder {
+  color: var(--text-dim) !important;
+}
+
+:host ::ng-deep
+.mat-mdc-form-field
+.mdc-floating-label {
+  color: var(--text-muted) !important;
+}
+
+:host ::ng-deep
+.mat-mdc-form-field.mat-focused
+.mdc-floating-label {
+  color: var(--primary) !important;
+}
+
+:host ::ng-deep
+.mat-mdc-form-field
+.mat-mdc-form-field-icon-suffix {
+  color: var(--text-dim) !important;
+}
+
+:host ::ng-deep
+.mat-mdc-form-field.mat-focused
+.mat-mdc-form-field-icon-suffix {
+  color: var(--primary) !important;
+}
+
 
 /* ==========================================================================
-   BOTÃO ENVIAR (COMBINANDO COM O ROXO PASTEL DO INÍCIO)
+   AÇÕES
    ========================================================================== */
-.acoes-form {
+
+.form-actions {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 8px;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
 }
 
-.btn-enviar-premium {
-  background-color: #e0e7ff !important; /* Roxo pastel idêntico ao da Home */
-  color: #4f46e5 !important;            /* Texto roxo forte */
-  border-radius: 12px !important;
-  padding: 14px 28px !important;        /* Altura anatômica e moderna */
-  font-weight: 600 !important;
-  transition: all 0.2s ease !important;
+.btn-primary {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 44px;
+  padding: 0 22px !important;
+
+  color: #ffffff !important;
+
+  background: var(--gradient) !important;
+
+  border: 1px solid rgba(99, 102, 241, 0.35) !important;
+  border-radius: var(--radius-sm) !important;
+
+  font-size: 13px !important;
+  font-weight: 700 !important;
+
+  box-shadow: var(--shadow-primary) !important;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease !important;
 }
 
-.btn-enviar-premium:hover {
-  background-color: #c7d2fe !important; /* Efeito hover suave */
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+
+  box-shadow:
+    0 14px 32px rgba(99, 102, 241, 0.22) !important;
 }
 
-.btn-enviar-premium mat-icon {
-  margin-left: 6px;
-  font-size: 18px;
+.btn-primary:disabled {
+  opacity: 0.55;
+}
+
+.btn-primary mat-icon {
   width: 18px;
   height: 18px;
+  font-size: 18px;
 }
 
+
 /* ==========================================================================
-   RESPONSIVIDADE (CELULAR)
+   ESTADOS
    ========================================================================== */
-@media (max-width: 600px) {
-  .linha-dupla {
-    flex-direction: column;
-    gap: 0; /* No celular, os campos ficam um embaixo do outro */
+
+.state-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 18px;
+  padding: 12px 14px;
+
+  border-radius: var(--radius-sm);
+
+  font-size: 13px;
+}
+
+.state-message.success {
+  color: #15803d;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.18);
+}
+
+.state-message.success mat-icon {
+  color: #16a34a;
+}
+
+.state-message.error {
+  color: #b91c1c;
+  background: rgba(220, 38, 38, 0.06);
+  border: 1px solid rgba(220, 38, 38, 0.16);
+}
+
+.state-message.error mat-icon {
+  color: #dc2626;
+}
+
+.state-message.error div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+
+/* ==========================================================================
+   RESPONSIVIDADE
+   ========================================================================== */
+
+@media (max-width: 700px) {
+
+  .container-contato {
+    width: min(100% - 28px, 900px);
+    padding: 35px 0 60px;
   }
-  
-  .btn-enviar-premium {
-    width: 100%; /* Botão ocupa a largura toda no celular */
-    justify-content: center;
+
+  .card-form {
+    padding: 20px !important;
+  }
+
+  .form-actions {
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 430px) {
+
+  .header-secao h2 {
+    font-size: 29px;
+  }
+
+  .header-secao p {
+    font-size: 14px;
+  }
+
+  .form-title-wrapper {
+    align-items: flex-start;
+  }
+
+  .form-icon {
+    width: 40px;
+    height: 40px;
   }
 }

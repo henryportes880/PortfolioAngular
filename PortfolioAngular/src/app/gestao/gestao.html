@@ -1,0 +1,195 @@
+<div class="container-projetos">
+
+  <!-- ===================== CABEÇALHO ===================== -->
+  <div class="header-secao">
+    <span class="section-eyebrow">Painel</span>
+    <h2>Administração</h2>
+    <p>Gerencie o conteúdo do seu portfólio de forma centralizada.</p>
+
+    <div class="header-info">
+      <span class="section-eyebrow">Área de gestão</span>
+      <p>
+        Gerencie os projetos do seu portfólio, adicionando, editando ou
+        removendo trabalhos.
+      </p>
+    </div>
+  </div>
+
+  <!-- ===================== FORMULÁRIO ===================== -->
+  <mat-card class="card-form">
+    <div class="form-header">
+      <div class="form-title-wrapper">
+        <span class="form-icon">
+          <mat-icon>{{ novoProjeto.id ? 'edit' : 'add' }}</mat-icon>
+        </span>
+        <div>
+          <h3>{{ novoProjeto.id ? 'Editar projeto' : 'Adicionar projeto' }}</h3>
+          <p>
+            {{ novoProjeto.id
+              ? 'Atualize as informações deste projeto.'
+              : 'Preencha os dados para adicionar um novo projeto.' }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <form (ngSubmit)="salvar()" class="form-grid">
+
+      <!-- Nome -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nome do Projeto</mat-label>
+        <input matInput [(ngModel)]="novoProjeto.nome" name="nome" required>
+        <mat-icon matSuffix>folder</mat-icon>
+      </mat-form-field>
+
+      <!-- Descrição -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descrição</mat-label>
+        <textarea matInput [(ngModel)]="novoProjeto.descricao" name="descricao" rows="3" required></textarea>
+        <mat-icon matSuffix>description</mat-icon>
+      </mat-form-field>
+
+      <!-- Tecnologias + Ano -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="technology-field">
+          <mat-label>Tecnologias</mat-label>
+          <input matInput [(ngModel)]="novoProjeto.tecnologias" name="tecnologias">
+          <mat-icon matSuffix>code</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="year-field">
+          <mat-label>Ano</mat-label>
+          <input matInput [(ngModel)]="novoProjeto.ano" name="ano">
+          <mat-icon matSuffix>calendar_today</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Link GitHub -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Link do GitHub</mat-label>
+        <input matInput [(ngModel)]="novoProjeto.link_github" name="link_github">
+        <mat-icon matSuffix>link</mat-icon>
+      </mat-form-field>
+
+      <!-- Ações -->
+      <div class="form-actions">
+        <button mat-raised-button class="btn-primary" type="submit">
+          <mat-icon>{{ novoProjeto.id ? 'save' : 'add' }}</mat-icon>
+          {{ novoProjeto.id ? 'Atualizar projeto' : 'Adicionar projeto' }}
+        </button>
+
+        @if (novoProjeto.id) {
+          <button mat-button type="button" class="btn-cancel" (click)="resetarFormulario()">
+            Cancelar
+          </button>
+        }
+      </div>
+    </form>
+  </mat-card>
+
+  <!-- ===================== LISTAGEM ===================== -->
+  <section class="projetos-section">
+
+    <div class="projetos-section-header">
+      <div>
+        <span class="section-eyebrow">Portfólio</span>
+        <h3>Projetos cadastrados</h3>
+      </div>
+
+      <span class="project-count">
+        {{ projetos.length }}
+        {{ projetos.length === 1 ? 'projeto' : 'projetos' }}
+      </span>
+    </div>
+
+    <!-- Loading -->
+    @if (carregando) {
+      <div class="state-message">
+        <mat-icon>sync</mat-icon>
+        Carregando projetos...
+      </div>
+    }
+
+    <!-- Erro -->
+    @if (erro) {
+      <div class="state-message error">
+        <mat-icon>error_outline</mat-icon>
+        {{ erro }}
+      </div>
+    }
+
+    <!-- Vazio -->
+    @if (!carregando && projetos.length === 0 && !erro) {
+      <div class="empty-state">
+        <span class="empty-icon">
+          <mat-icon>folder_open</mat-icon>
+        </span>
+        <h3>Nenhum projeto cadastrado</h3>
+        <p>Use o formulário acima para adicionar seu primeiro projeto.</p>
+      </div>
+    }
+
+    <!-- Grade de projetos -->
+    @if (!carregando && projetos.length > 0) {
+      <div class="grade-projetos-premium">
+
+        @for (item of projetos; track item.id) {
+          <mat-card class="card-projeto-premium">
+
+            <!-- Topo -->
+            <div class="project-card-top">
+              <span class="project-icon">
+                <mat-icon>folder</mat-icon>
+              </span>
+              <span class="badge-ano">{{ item.ano }}</span>
+            </div>
+
+            <!-- Conteúdo -->
+            <div class="project-card-content">
+              <h3 class="titulo-p">{{ item.nome }}</h3>
+              <p class="descricao-p">{{ item.descricao }}</p>
+
+              @if (item.tecnologias) {
+                <div class="tech-list">
+                  @for (tecnologia of item.tecnologias.split(','); track tecnologia) {
+                    <span class="tech-tag">{{ tecnologia.trim() }}</span>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Ações -->
+            <div class="card-actions">
+              @if (item.link_github) {
+                <a
+                  [href]="item.link_github"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="github-link">
+                  <mat-icon>open_in_new</mat-icon>
+                  GitHub
+                </a>
+              }
+
+              <span class="actions-spacer"></span>
+
+              <button mat-button class="btn-edit" (click)="editar(item)">
+                <mat-icon>edit</mat-icon>
+                Editar
+              </button>
+
+              <button mat-button class="btn-delete" (click)="excluir(item.id)">
+                <mat-icon>delete_outline</mat-icon>
+                Excluir
+              </button>
+            </div>
+
+          </mat-card>
+        }
+
+      </div>
+    }
+
+  </section>
+
+</div>

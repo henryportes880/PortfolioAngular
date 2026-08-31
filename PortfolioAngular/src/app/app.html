@@ -1,42 +1,126 @@
-<mat-sidenav-container class="container-principal">
-  <mat-sidenav #sidenav mode="over" class="menu-lateral">
-    <div class="links-lateral">
-      <a mat-button routerLink="/" routerLinkActive="ativo" [routerLinkActiveOptions]="{ exact: true }" (click)="sidenav.close()">
-        <mat-icon>home</mat-icon> Início
-      </a>
-      <a mat-button routerLink="/sobre" routerLinkActive="ativo" (click)="sidenav.close()">
-        <mat-icon>person</mat-icon> Sobre
-      </a>
-      <a mat-button routerLink="/projetos" routerLinkActive="ativo" (click)="sidenav.close()">
-        <mat-icon>build</mat-icon> Projetos
-      </a>
-      <a mat-button routerLink="/catalogo" routerLinkActive="ativo" (click)="sidenav.close()">
-        <mat-icon>list_alt</mat-icon> Catálogo
-      </a>
-      <a mat-button routerLink="/contato" routerLinkActive="ativo" (click)="sidenav.close()">
-        <mat-icon>email</mat-icon> Contato
-      </a>
+<mat-sidenav-container class="app-container">
+
+  <!-- MENU LATERAL -->
+  <mat-sidenav
+    #sidenav
+    class="menu-lateral"
+    [mode]="drawerMode()"
+    [opened]="drawerOpened()"
+    [disableClose]="!isMobile()"
+    role="navigation"
+    aria-label="Menu principal">
+
+    <div class="drawer-cabecalho">
+
+      <div class="logo-mark">
+        <mat-icon>code</mat-icon>
+      </div>
+
+      <div class="logo-texto">
+        <strong>Henry Portes</strong>
+        <span>Desenvolvedor</span>
+      </div>
+
     </div>
+
+    <mat-divider></mat-divider>
+
+    <nav class="links-lateral">
+
+      @for (link of links; track link.path) {
+
+        <a
+          mat-button
+          [routerLink]="link.path"
+          routerLinkActive="ativo"
+          [routerLinkActiveOptions]="{ exact: link.exact }"
+          (click)="closeOnMobile(sidenav)">
+
+          <mat-icon>{{ link.icon }}</mat-icon>
+
+          <span>{{ link.label }}</span>
+
+        </a>
+
+      }
+
+    </nav>
+
+    <div class="drawer-footer">
+
+      <div class="status-online">
+        <span class="status-dot"></span>
+        <span>Disponível para projetos</span>
+      </div>
+
+    </div>
+
   </mat-sidenav>
 
+
+  <!-- CONTEÚDO -->
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <button mat-icon-button (click)="sidenav.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
-      
-      <span>Meu Portfólio</span>
+
+    <mat-toolbar class="toolbar">
+
+      @if (isMobile()) {
+
+        <button
+          mat-icon-button
+          class="btn-hamburguer"
+          (click)="sidenav.toggle()"
+          [attr.aria-label]="sidenav.opened ? 'Fechar menu' : 'Abrir menu'">
+
+          <mat-icon>menu</mat-icon>
+
+        </button>
+
+      }
+
+
+      <div class="toolbar-brand">
+
+        <span class="toolbar-ponto"></span>
+
+        <span>Portfólio</span>
+
+      </div>
+
+
       <span class="espacador"></span>
-      
-      <a mat-button routerLink="/" routerLinkActive="ativo" [routerLinkActiveOptions]="{ exact: true }">Início</a>
-      <a mat-button routerLink="/sobre" routerLinkActive="ativo">Sobre</a>
-      <a mat-button routerLink="/projetos" routerLinkActive="ativo">Projetos</a>
-      <a mat-button routerLink="/catalogo" routerLinkActive="ativo">Catálogo</a>
-      <a mat-button routerLink="/contato" routerLinkActive="ativo">Contato</a>
+
+
+      @if (!isMobile()) {
+
+        <nav class="links-topo">
+
+          @for (link of links; track link.path) {
+
+            <a
+              mat-button
+              [routerLink]="link.path"
+              routerLinkActive="ativo"
+              [routerLinkActiveOptions]="{ exact: link.exact }">
+
+              {{ link.label }}
+
+            </a>
+
+          }
+
+        </nav>
+
+      }
+
     </mat-toolbar>
 
-    <main style="padding: 24px;">
+
+    <main class="conteudo">
+
       <router-outlet></router-outlet>
+
     </main>
+
   </mat-sidenav-content>
+
 </mat-sidenav-container>

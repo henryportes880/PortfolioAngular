@@ -1,34 +1,160 @@
-<section class="contato-container">
-  <h2>Contato</h2>
+<div class="container-contato">
 
-  <div *ngIf="mensagemSucesso" style="color: green; margin-bottom: 10px;">
-    {{ mensagemSucesso }}
-  </div>
+  <!-- CABEÇALHO -->
+  <header class="header-secao">
 
-  <div *ngIf="errosValidacao.length > 0" style="color: red; margin-bottom: 10px;">
-    <ul>
-      <li *ngFor="let erro of errosValidacao">{{ erro }}</li>
-    </ul>
-  </div>
+    <span class="section-eyebrow">PORTFÓLIO</span>
 
-  <form (ngSubmit)="onSubmit()" #formContato="ngForm">
-    <div>
-      <label>Nome:</label><br>
-      <input type="text" name="nome" [(ngModel)]="dados.nome" required>
+    <h2>Entre em Contato</h2>
+
+    <p>
+      Tem alguma dúvida, sugestão ou quer conversar sobre um projeto?
+      Envie uma mensagem.
+    </p>
+
+  </header>
+
+
+  <!-- FORMULÁRIO -->
+  <mat-card class="card-form">
+
+    <div class="form-header">
+
+      <div class="form-title-wrapper">
+
+        <div class="form-icon">
+          <mat-icon>mail_outline</mat-icon>
+        </div>
+
+        <div>
+
+          <h3>Envie uma mensagem</h3>
+
+          <p>
+            Preencha os campos abaixo e entrarei em contato.
+          </p>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <div>
-      <label>E-mail:</label><br>
-      <input type="email" name="email" [(ngModel)]="dados.email" required>
+
+    <!-- SUCESSO -->
+    <div
+      *ngIf="mensagemSucesso"
+      class="state-message success">
+
+      <mat-icon>check_circle_outline</mat-icon>
+
+      <span>{{ mensagemSucesso }}</span>
+
     </div>
 
-    <div>
-      <label>Mensagem:</label><br>
-      <textarea name="mensagem" [(ngModel)]="dados.mensagem" rows="4" required></textarea>
+
+    <!-- ERROS -->
+    <div
+      *ngIf="errosValidacao.length > 0"
+      class="state-message error">
+
+      <mat-icon>error_outline</mat-icon>
+
+      <div>
+        <span *ngFor="let erro of errosValidacao">
+          {{ erro }}
+        </span>
+      </div>
+
     </div>
 
-    <button type="submit" [disabled]="!formContato.form.valid || enviando">
-      {{ enviando ? 'Enviando...' : 'Enviar' }}
-    </button>
-  </form>
-</section>
+
+    <form
+      (ngSubmit)="onSubmit()"
+      #formContato="ngForm"
+      class="form-grid">
+
+
+      <!-- NOME -->
+      <mat-form-field
+        appearance="outline"
+        class="full-width">
+
+        <mat-label>Nome</mat-label>
+
+        <input
+          matInput
+          type="text"
+          name="nome"
+          [(ngModel)]="dados.nome"
+          required
+          placeholder="Digite seu nome">
+
+        <mat-icon matSuffix>person_outline</mat-icon>
+
+      </mat-form-field>
+
+
+      <!-- EMAIL -->
+      <mat-form-field
+        appearance="outline"
+        class="full-width">
+
+        <mat-label>E-mail</mat-label>
+
+        <input
+          matInput
+          type="email"
+          name="email"
+          [(ngModel)]="dados.email"
+          required
+          email
+          placeholder="Digite seu e-mail">
+
+        <mat-icon matSuffix>mail_outline</mat-icon>
+
+      </mat-form-field>
+
+
+      <!-- MENSAGEM -->
+      <mat-form-field
+        appearance="outline"
+        class="full-width">
+
+        <mat-label>Mensagem</mat-label>
+
+        <textarea
+          matInput
+          name="mensagem"
+          [(ngModel)]="dados.mensagem"
+          rows="6"
+          required
+          placeholder="Escreva sua mensagem..."></textarea>
+
+      </mat-form-field>
+
+
+      <!-- BOTÃO -->
+      <div class="form-actions">
+
+        <button
+          mat-flat-button
+          class="btn-primary"
+          type="submit"
+          [disabled]="!formContato.form.valid || enviando">
+
+          <mat-icon>
+            {{ enviando ? 'sync' : 'send' }}
+          </mat-icon>
+
+          {{ enviando ? 'Enviando...' : 'Enviar mensagem' }}
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </mat-card>
+
+</div>

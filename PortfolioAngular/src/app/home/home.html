@@ -1,20 +1,133 @@
-<mat-card class="card-hero">
-  <mat-card-content>
-    <span class="tag-status">Desenvolvedor Front-end</span>
-    
-    <h1 class="titulo-principal"> Henry Portes </h1>
-    
-    <p class="paragrafo-impacto">
-      Estudante de Informática no IFPR. Desenvolvo interfaces modernas, limpas e totalmente responsivas utilizando o ecossistema do Angular.
-    </p>
+<section class="home">
 
-    <div class="botoes-home">
-      <a mat-flat-button class="btn-principal" routerLink="/projetos">
-        <mat-icon>folder_open</mat-icon> Conhecer Projetos
-      </a>
-      <a mat-stroked-button class="btn-secundario" routerLink="/contato">
-        <mat-icon>chat_bubble_outline</mat-icon> Vamos Conversar?
-      </a>
+  <div class="hero-grid">
+
+    <div class="hero-content">
+
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        Desenvolvedor Front-end
+      </div>
+
+      <h1>
+        Olá, eu sou
+        <span>Henry Portes.</span>
+      </h1>
+
+      <p class="hero-description">
+        Estudante de Técnico em Informática no IFPR e apaixonado por
+        desenvolvimento web. Crio interfaces modernas, responsivas e
+        experiências digitais focadas no usuário.
+      </p>
+
+      <div class="hero-actions">
+
+        <a
+          mat-flat-button
+          class="btn-primary"
+          routerLink="/projetos">
+
+          <mat-icon>arrow_forward</mat-icon>
+          Ver meus projetos
+
+        </a>
+
+        <a
+          mat-stroked-button
+          class="btn-secondary"
+          routerLink="/contato">
+
+          <mat-icon>mail_outline</mat-icon>
+          Entrar em contato
+
+        </a>
+
+      </div>
+
+      <div class="hero-stack">
+
+        <span>Atualmente trabalhando com</span>
+
+        <div class="stack-list">
+          <span>Angular</span>
+          <span>TypeScript</span>
+          <span>HTML</span>
+          <span>CSS</span>
+        </div>
+
+      </div>
+
     </div>
-  </mat-card-content>
-</mat-card>
+
+
+    <div class="hero-visual">
+
+      <div class="glow glow-one"></div>
+      <div class="glow glow-two"></div>
+
+      <div class="code-card">
+
+        <div class="code-header">
+
+          <div class="window-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <span>developer.ts</span>
+
+        </div>
+
+        <div class="code-content">
+
+          <div>
+            <span class="code-keyword">const</span>
+            <span class="code-variable">developer</span>
+            <span class="code-symbol">=</span>
+            <span class="code-bracket">{{ '{' }}</span>
+          </div>
+
+          <div class="code-indent">
+            <span class="code-property">name:</span>
+            <span class="code-string">'Henry Portes'</span><span>,</span>
+          </div>
+
+          <div class="code-indent">
+            <span class="code-property">role:</span>
+            <span class="code-string">'Frontend Developer'</span><span>,</span>
+          </div>
+
+          <div class="code-indent">
+            <span class="code-property">stack:</span>
+            <span class="code-string">'Angular + TypeScript'</span><span>,</span>
+          </div>
+
+          <div class="code-indent">
+            <span class="code-property">passion:</span>
+            <span class="code-string">'Web Development'</span>
+          </div>
+
+          <div>
+            <span class="code-bracket">{{ '}' }}</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="floating-card floating-card-one">
+        <mat-icon>code</mat-icon>
+        <span>Clean Code</span>
+      </div>
+
+      <div class="floating-card floating-card-two">
+        <mat-icon>devices</mat-icon>
+        <span>Responsive</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
