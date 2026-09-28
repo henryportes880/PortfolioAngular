@@ -7,26 +7,36 @@ export interface Projeto {
   nome: string;
   descricao: string;
   tecnologias: string;
-  link_github: string;
+  link_github: string | null;
   ano: number;
 }
 
 @Injectable({ providedIn: 'root' })
 export class ProjetoService {
   private http = inject(HttpClient);
-  // Troque pela URL pública da sua porta 8000 do Codespace
-  private url = 'https://stunning-robot-4j4rwr9vjvq43qqj7-8000.app.github.dev/api/projetos.php';
+
+  // API do Portfolio em Node - Aula 21
+  private url = 'https://stunning-robot-4j4rwr9vjvq43qqj7-3000.app.github.dev/api/projetos';
 
   listar(): Observable<Projeto[]> {
     return this.http.get<Projeto[]>(this.url);
   }
 
   criar(projeto: Projeto): Observable<{ id?: number; mensagem?: string }> {
-    return this.http.post<{ id?: number; mensagem?: string }>(this.url, projeto);
+    return this.http.post<{ id?: number; mensagem?: string }>(
+      this.url,
+      projeto
+    );
   }
 
-  atualizar(id: number, projeto: Projeto): Observable<{ id?: number; mensagem?: string }> {
-    return this.http.put<{ id?: number; mensagem?: string }>(`${this.url}?id=${id}`, projeto);
+  atualizar(
+    id: number,
+    projeto: Projeto
+  ): Observable<{ id?: number; mensagem?: string }> {
+    return this.http.put<{ id?: number; mensagem?: string }>(
+      `${this.url}?id=${id}`,
+      projeto
+    );
   }
 
   excluir(id: number): Observable<void> {

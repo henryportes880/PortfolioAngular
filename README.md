@@ -59,6 +59,22 @@ A seção de **Gestão** conta com um CRUD completo integrado à API PHP:
 
 ### 1. Clonar o repositório
 
-```bash
-git clone [https://github.com/henryportes/PortfolioAngular.git](https://github.com/henryportes/PortfolioAngular.git)
+git clone https://github.com/henryportes/PortfolioAngular.git
 cd PortfolioAngular
+
+---
+
+## API em Node (Aula 21)[cite: 1]
+
+Uma segunda versao da API, em JavaScript, na pasta `api-node/`.[cite: 1]
+O contrato de `GET /api/projetos` e o mesmo do `api/projetos.php`.[cite: 1]
+
+Como rodar:
+
+cd api-node
+npm install
+node server.js
+
+A API sobe em http://localhost:3000. Teste com:[cite: 1]
+
+curl -i http://localhost:3000/api/projetos
