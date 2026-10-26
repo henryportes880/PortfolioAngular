@@ -24,6 +24,7 @@ import { ProjetoService, Projeto } from '../projeto.service';
   styleUrl: './gestao.css'
 })
 export class Gestao implements OnInit {
+
   private service = inject(ProjetoService);
 
   projetos: Projeto[] = [];
@@ -44,12 +45,15 @@ export class Gestao implements OnInit {
 
   carregarProjetos() {
     this.carregando = true;
+    this.erro = '';
+
     this.service.listar().subscribe({
       next: (dados) => {
         this.projetos = dados;
         this.carregando = false;
       },
-      error: () => {
+      error: (erro) => {
+        console.error('Erro ao carregar projetos:', erro);
         this.erro = 'Erro ao carregar projetos.';
         this.carregando = false;
       }
@@ -57,33 +61,62 @@ export class Gestao implements OnInit {
   }
 
   editar(item: Projeto) {
-    this.novoProjeto = { ...item };
+    this.novoProjeto = {
+      ...item
+    };
+
+    console.log('Projeto selecionado para edição:', this.novoProjeto);
   }
 
   salvar() {
+    if (!this.novoProjeto.nome) {
+      this.erro = 'Informe o nome do projeto.';
+      return;
+    }
+
     if (this.novoProjeto.id) {
-      this.service.atualizar(this.novoProjeto.id, this.novoProjeto).subscribe({
+
+      this.service.atualizar(
+        this.novoProjeto.id,
+        this.novoProjeto
+      ).subscribe({
         next: () => {
           this.resetarFormulario();
           this.carregarProjetos();
+        },
+        error: (erro) => {
+          console.error('Erro ao atualizar projeto:', erro);
+          this.erro = 'Erro ao atualizar projeto.';
         }
       });
+
     } else {
+
       this.service.criar(this.novoProjeto).subscribe({
         next: () => {
           this.resetarFormulario();
           this.carregarProjetos();
+        },
+        error: (erro) => {
+          console.error('Erro ao criar projeto:', erro);
+          this.erro = 'Erro ao criar projeto.';
         }
       });
+
     }
   }
 
   excluir(id: number | undefined) {
     if (!id) return;
+
     if (confirm('Deseja realmente excluir este projeto?')) {
       this.service.excluir(id).subscribe({
         next: () => {
           this.carregarProjetos();
+        },
+        error: (erro) => {
+          console.error('Erro ao excluir projeto:', erro);
+          this.erro = 'Erro ao excluir projeto.';
         }
       });
     }
@@ -97,5 +130,7 @@ export class Gestao implements OnInit {
       link_github: '',
       ano: 2026
     };
+
+    this.erro = '';
   }
 }
