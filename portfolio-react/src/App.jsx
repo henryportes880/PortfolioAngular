@@ -1,5 +1,6 @@
 import Cabecalho from './Cabecalho.jsx';
 import CardProjeto from './CardProjeto.jsx';
+import Contato from './Contato.jsx';
 import Rodape from './Rodape.jsx';
 import projetos from './projetos.js';
 
@@ -22,6 +23,7 @@ function App() {
             />
           ))}
         </div>
+        <Contato />
       </main>
       <Rodape />
     </>
