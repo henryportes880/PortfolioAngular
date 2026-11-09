@@ -1,8 +1,15 @@
-// Rodape: o fim da pagina. Escrito por voce, no molde do Cabecalho.
+import Seta from './Seta.jsx';
+
+// Rodape: o fim da pagina, com a identidade e a formação.
 function Rodape() {
   return (
-    <footer>
-      <p>Portfólio de Henry Portes - IFPR - 2026</p>
+    <footer className="rodape container">
+      <div>
+        <p className="rodape-nome">Henry Portes</p>
+        <p>Aprendendo e construindo na web.</p>
+      </div>
+      <p className="rodape-escola">Técnico em Informática<br />IFPR — Campus Ponta Grossa</p>
+      <a className="text-link" href="#inicio">Voltar ao início <Seta direcao="cima" /></a>
     </footer>
   );
 }

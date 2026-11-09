@@ -1,19 +1,142 @@
-/* Portfolio em React - estilos globais (Aula 25). Um arquivo so; a Aula 30 cuida do acabamento. */
+/* Paleta e medidas compartilhadas mantêm a página consistente. */
+:root {
+  color-scheme: dark;
+  --fundo: #171817;
+  --superficie: #1e201e;
+  --texto: #eeeee7;
+  --secundario: #b0b2aa;
+  --linha: #3c3f39;
+  --destaque: #d8d5c3;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--texto);
+  background: var(--fundo);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
 * { box-sizing: border-box; }
-body { margin: 0; font-family: Arial, sans-serif; background-color: #f4f6fa; color: #1f2937; }
-header { background-color: #3b579d; color: #ffffff; padding: 12px 24px; display: flex; align-items: center; }
-header h1 { margin: 0; font-size: 20px; flex: 1; }
-nav a { color: #ffffff; margin-left: 16px; text-decoration: none; }
-nav a:hover { text-decoration: underline; }
-main { max-width: 900px; margin: 24px auto; padding: 0 16px; }
-.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-.card { background-color: #ffffff; border: 1px solid #d9dee8; border-radius: 12px; padding: 16px; }
-.card h3 { margin: 0 0 4px; }
-.card .meta { margin: 0 0 8px; color: #6b7280; font-size: 14px; }
-.card a { color: #3b579d; font-weight: bold; }
-footer { text-align: center; color: #6b7280; padding: 24px; font-size: 14px; }
-.contato { margin-top: 32px; }
-label { display: block; margin: 0 0 12px; font-weight: bold; }
-input, textarea { display: block; width: 100%; margin-top: 4px; padding: 8px; border: 1px solid #d9dee8; border-radius: 8px; font: inherit; }
-button { background-color: #3b579d; color: #ffffff; border: 0; border-radius: 8px; padding: 10px 20px; font: inherit; cursor: pointer; }
-.aviso { color: #2e7d32; font-weight: bold; }
+html { scroll-behavior: smooth; scroll-padding-top: 28px; }
+body { margin: 0; font-size: 16px; line-height: 1.65; }
+::selection { background: var(--destaque); color: var(--fundo); }
+a { color: inherit; text-decoration: none; }
+button, input, textarea { font: inherit; }
+button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--destaque); outline-offset: 6px; }
+p, h1, h2, h3 { margin: 0; }
+h1, h2, h3 { text-wrap: balance; }
+em { font-family: Georgia, "Times New Roman", serif; font-weight: 400; }
+.container { width: min(1184px, calc(100% - 96px)); margin-inline: auto; }
+.eyebrow, .section-label, .card-topo, .meta, .sem-link { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 11px; letter-spacing: .08em; }
+.eyebrow, .section-label { text-transform: uppercase; color: var(--secundario); }
+.text-link { display: inline-flex; align-items: center; min-height: 44px; gap: 24px; font-size: 14px; font-weight: 500; }
+.seta { flex-shrink: 0; transition: translate .18s ease; }
+.seta--baixo { rotate: 90deg; }
+.seta--cima { rotate: -45deg; }
+.text-link:hover { color: var(--destaque); text-decoration: underline; text-underline-offset: 5px; }
+.text-link:hover .seta { translate: 2px -2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.skip-link { position: absolute; top: 12px; left: 20px; z-index: 2; padding: 12px 20px; background: var(--texto); color: var(--fundo); transform: translateY(-180%); }
+.skip-link:focus { transform: translateY(0); }
+
+/* Cabeçalho e apresentação */
+.cabecalho { display: flex; justify-content: space-between; align-items: center; gap: 24px; min-height: 112px; border-bottom: 1px solid var(--linha); }
+.identidade { display: flex; align-items: center; gap: 16px; font-size: 16px; font-weight: 600; letter-spacing: -.02em; }
+.monograma { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-size: 30px; font-weight: 400; letter-spacing: -.08em; border-right: 1px solid var(--linha); padding-right: 20px; }
+nav { display: flex; align-items: center; gap: 32px; }
+nav a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 13px; color: var(--secundario); transition: color .18s ease; }
+nav a:hover { color: var(--texto); }
+.apresentacao { padding: 38px 0 88px; }
+.section-label { display: flex; justify-content: space-between; gap: 24px; }
+.apresentacao h1 { max-width: 1000px; font-size: clamp(64px, 7.8vw, 108px); font-weight: 400; line-height: 1.08; letter-spacing: -.065em; margin: 66px 0 48px; }
+.apresentacao h1 em { color: var(--destaque); letter-spacing: -.065em; }
+.apresentacao-base { display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
+.apresentacao-base > a { flex-shrink: 0; padding-bottom: 8px; border-bottom: 1px solid var(--linha); }
+.apresentacao-texto { max-width: 454px; }
+.apresentacao-texto p { font-size: 17px; }
+.apresentacao-texto p + p { color: var(--secundario); font-size: 14px; margin-top: 14px; }
+
+/* Projetos: duas colunas, sem caixas decorativas. */
+.projetos { border-top: 1px solid var(--linha); padding: 64px 0 88px; }
+.section-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: 48px; }
+h2 { font-size: clamp(32px, 3.2vw, 44px); line-height: 1.18; font-weight: 400; letter-spacing: -.04em; }
+.section-heading h2 { margin-top: 18px; }
+.section-heading > p { color: var(--secundario); font-size: 13px; flex-shrink: 0; }
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 48px; counter-reset: projeto; }
+.card { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; border-top: 1px solid var(--linha); padding: 26px 0 32px; }
+.card-topo { display: flex; align-items: center; justify-content: space-between; width: 100%; color: var(--secundario); margin-bottom: 26px; }
+.project-number::before { counter-increment: projeto; content: counter(projeto, decimal-leading-zero); color: var(--destaque); }
+.card h3 { font-size: clamp(24px, 2.3vw, 30px); line-height: 1.25; font-weight: 500; letter-spacing: -.035em; }
+.descricao { color: var(--secundario); font-size: 15px; margin: 14px 0 22px; max-width: 440px; }
+.meta { color: var(--destaque); letter-spacing: .01em; line-height: 1.8; margin-top: auto; }
+.card-rodape { width: 100%; min-height: 44px; margin-top: 24px; display: flex; align-items: center; }
+.sem-link { color: var(--secundario); letter-spacing: .01em; }
+
+/* Contato: formulário local com labels e status visíveis. */
+.contato { display: grid; grid-template-columns: .9fr 1.1fr; gap: 88px; padding: 72px 0 64px; border-top: 1px solid var(--linha); }
+.contato h2 { margin: 20px 0 24px; }
+.contato-intro > p:not(.eyebrow) { color: var(--secundario); font-size: 15px; max-width: 340px; }
+.nota-demo { margin-top: 40px; border-left: 1px solid var(--linha); padding-left: 18px; max-width: 350px; }
+.nota-demo .eyebrow { color: var(--destaque); font-size: 10px; letter-spacing: .06em; }
+.nota-demo p { margin-top: 8px; font-size: 13px; color: var(--secundario); }
+.contato-formulario { min-width: 0; padding-top: 6px; }
+.form-linha { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.campo { min-width: 0; margin-bottom: 24px; }
+label { display: block; margin-bottom: 10px; font-size: 13px; }
+input, textarea { display: block; width: 100%; min-width: 0; border: 1px solid #707469; border-radius: 2px; background: var(--superficie); color: var(--texto); padding: 13px 14px; transition: border-color .18s ease; }
+input { min-height: 50px; }
+textarea { resize: vertical; min-height: 154px; }
+input:hover, textarea:hover { border-color: var(--secundario); }
+input:focus-visible, textarea:focus-visible { border-color: var(--destaque); outline-offset: 3px; }
+.form-detalhes { display: flex; justify-content: space-between; gap: 20px; color: var(--secundario); font-size: 12px; margin-top: -12px; margin-bottom: 28px; overflow-wrap: anywhere; }
+.form-detalhes p:last-child { flex-shrink: 0; font-variant-numeric: tabular-nums; }
+button { display: inline-flex; justify-content: space-between; align-items: center; gap: 72px; min-height: 52px; border: 1px solid var(--destaque); border-radius: 2px; background: var(--destaque); color: var(--fundo); padding: 12px 22px; cursor: pointer; font-size: 14px; font-weight: 600; transition: background .18s ease; }
+button:hover { background: var(--texto); }
+.aviso { min-height: 48px; margin-top: 20px; color: var(--destaque); font-size: 13px; overflow-wrap: anywhere; }
+
+.rodape { display: flex; justify-content: space-between; align-items: center; gap: 32px; border-top: 1px solid var(--linha); padding-block: 32px 40px; }
+.rodape p { font-size: 12px; color: var(--secundario); }
+.rodape .rodape-nome { color: var(--texto); font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+.rodape-escola { margin-left: auto; }
+.rodape .text-link { font-size: 12px; }
+
+@media (max-width: 1000px) {
+  .container { width: calc(100% - 64px); }
+  .contato { gap: 48px; }
+  .section-heading { align-items: flex-start; }
+  .section-heading > p { flex-shrink: 1; padding-top: 34px; }
+  .cards { column-gap: 32px; }
+}
+@media (max-width: 700px) {
+  .container { width: calc(100% - 40px); }
+  .cabecalho { min-height: 0; padding-block: 22px 14px; flex-wrap: wrap; gap: 14px; }
+  .identidade { gap: 12px; }
+  .monograma { font-size: 27px; padding-right: 14px; }
+  nav { width: 100%; justify-content: space-between; gap: 24px; }
+  .apresentacao { padding: 24px 0 48px; }
+  .section-label { font-size: 9px; letter-spacing: .06em; gap: 20px; }
+  .section-label p:last-child { max-width: 152px; text-align: right; }
+  .apresentacao h1 { font-size: clamp(43px, 10.5vw, 72px); margin: 44px 0 32px; }
+  .apresentacao-base { flex-direction: column-reverse; align-items: flex-start; gap: 30px; }
+  .apresentacao-texto { max-width: 480px; }
+  .apresentacao-texto p { font-size: 16px; }
+  .projetos { padding: 42px 0 40px; }
+  .section-heading { flex-direction: column; gap: 18px; margin-bottom: 32px; }
+  .section-heading > p { padding: 0; }
+  .cards { grid-template-columns: minmax(0, 1fr); }
+  .card { padding-block: 24px 30px; }
+  .card h3 { font-size: 28px; }
+  .card-topo { margin-bottom: 20px; }
+  .contato { grid-template-columns: minmax(0, 1fr); gap: 36px; padding: 44px 0 28px; }
+  .contato-intro > p:not(.eyebrow), .nota-demo { max-width: 480px; }
+  .nota-demo { margin-top: 24px; }
+  .rodape { flex-wrap: wrap; align-items: flex-start; gap: 20px; padding-block: 28px; }
+  .rodape-escola { margin: 0; }
+  .rodape .text-link { flex-basis: 100%; justify-content: space-between; border-top: 1px solid var(--linha); padding-top: 18px; }
+}
+@media (max-width: 420px) {
+  .form-linha { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .rodape-escola { flex-basis: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; }
+}
