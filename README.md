@@ -59,62 +59,532 @@ A seção de **Gestão** conta com um CRUD completo integrado à API PHP:
 
 ### 1. Clonar o repositório
 
-git clone https://github.com/henryportes/PortfolioAngular.git
+git clone https://github.com/henryportes880/PortfolioAngular.git
 cd PortfolioAngular
 
 ---
 
-## API em Node (Aula 21)
+## API em Node — Entrega A (Aulas 21 a 24)
 
-Uma segunda versao da API, em JavaScript, na pasta `api-node/`.
-O contrato de `GET /api/projetos` e o mesmo do `api/projetos.php`.
+Correção da documentação em 16/11/2026: os exemplos agora incluem a primeira
+linha HTTP e o corpo realmente recebidos. A API está em `PortfolioAngular/api-node/`
+e os scripts do banco em `PortfolioAngular/sql/`, considerando a raiz deste repositório.
+Os portfólios Angular e React não foram alterados nesta correção.
 
-Como rodar:
+### Como rodar do zero
 
-cd api-node
-npm install
-node server.js
+Pré-requisitos: Git, Node.js com npm e MariaDB. Os comandos abaixo partem de um
+MariaDB local **novo**, com acesso administrativo via `sudo mariadb` e socket
+`/run/mysqld/mysqld.sock`. `setup.sql` contém `DROP TABLE`: **não execute em um
+banco com dados que deseja manter**. Para testar em um ambiente existente,
+use outra instância MariaDB (por exemplo, um container sem portas publicadas)
+e configure `DB_SOCKET`; não importe o setup sobre seus dados.
 
-A API sobe em http://localhost:3000. Teste com:
+1. Clone e entre na raiz:
 
-curl -i http://localhost:3000/api/projetos
+   ```sh
+   git clone https://github.com/henryportes880/PortfolioAngular.git
+   cd PortfolioAngular
+   ```
 
-### Aula 22: a API le do banco
+2. Inicie o MariaDB e confira se já existe um banco antes de importar qualquer SQL:
 
-Antes de subir a API, o MariaDB precisa estar de pe:
+   ```sh
+   sudo service mariadb start
+   sudo mariadb -e "SHOW DATABASES LIKE 'dwii_db';"
+   ```
 
-    sudo service mariadb start
-    cd api-node
-    node server.js
+   Se o banco já existir, pare aqui e preserve-o. Os dois próximos comandos são
+   para uma instância nova: o primeiro cria banco, usuário local, tabelas e dados
+   de exemplo; o segundo cria a tabela de usuários, ainda sem um dono cadastrado.
 
-Rotas que leem do `dwii_db`:
+   ```sh
+   sudo mariadb < PortfolioAngular/sql/setup.sql
+   sudo mariadb dwii_db < PortfolioAngular/sql/usuarios.sql
+   ```
 
-    curl -i http://localhost:3000/api/projetos
-    curl -i http://localhost:3000/api/projetos/5
-    curl -i http://localhost:3000/api/tecnologias
+   `usuarios.sql` também não deve ser reaplicado se a tabela já existe. As
+   credenciais locais de demonstração de `setup.sql` correspondem a `db.js`;
+   não são configuração para um banco de produção.
+
+3. Instale as dependências da API:
+
+   ```sh
+   cd PortfolioAngular/api-node
+   npm install
+   ```
+
+   Com o lockfile existente, `npm ci` também funciona e foi o comando usado na
+   verificação desta correção. Não versione `node_modules`.
+
+4. Crie o usuário usando seu próprio email e uma senha nova. Em Bash, a leitura
+   oculta evita gravar a senha literal no histórico; não execute com `set -x`:
+
+   ```sh
+   read -r -p 'Email do dono: ' EMAIL_DONO
+   read -r -s -p 'Senha nova: ' SENHA_DONO
+   printf '\n'
+   node criar-usuario.js "$EMAIL_DONO" "$SENHA_DONO"
+   unset SENHA_DONO EMAIL_DONO
+   ```
+
+   O formato do comando é `node criar-usuario.js <email> <senha>` (os marcadores
+   devem ser substituídos, não digitados literalmente). O script grava um hash
+   bcrypt, não a senha. Email duplicado viola a restrição UNIQUE; não recrie um
+   usuário existente. Se reutilizou a senha anteriormente exposta nos exemplos,
+   troque-a no ambiente real: remover o exemplo não remove o histórico. Nenhuma
+   credencial de um ambiente existente foi alterada nesta correção.
+
+5. Inicialize a API e mantenha esse terminal aberto:
+
+   ```sh
+   node server.js
+   ```
+
+   A API atende em `http://localhost:3000`. Use outro terminal para os exemplos.
+   Para um MariaDB isolado com outro socket, use a mesma variável tanto na
+   criação do usuário quanto na inicialização:
+
+   ```sh
+   export DB_SOCKET=/caminho/da/instancia-de-teste/mysqld.sock
+   ```
+
+   Sem essa variável, o comportamento anterior permanece. Não é necessário
+   iniciar Angular ou React para testar a API.
+
+### Origem das evidências
+
+As respostas abaixo foram obtidas com `curl -i` e HTTP/1.1, em 16/11/2026, com
+Node.js 24.22.1, dependências instaladas por `npm ci` e MariaDB 11.4 em container
+isolado, sem rede ou portas publicadas. Importei os SQLs deste repositório em
+uma instância nova, com socket em `/workspace/work/entrega-a/socket/mysqld.sock`.
+Não usei nem alterei um banco de dados existente.
+
+Criei o usuário temporário `teste.entrega-a@example.invalid` com senha aleatória;
+este é um endereço de teste, não o email do dono. Só senha e token foram
+substituídos por `<senha>` e `<token>` nas transcrições. Cabeçalhos adicionais
+foram omitidos; status e corpos foram mantidos. Um `<token>` nos exemplos
+representa o JWT válido recebido no login, exceto no teste explicitamente inválido.
+Para repetir, substitua também o email pelo usuário criado no seu banco.
+
+O login foi executado antes das escritas. As seções seguem os números das aulas,
+não a ordem temporal das requisições. Exemplos repetidos na seção Aula 24 são
+as mesmas capturas da mesma execução, não novas execuções. O ID 7 veio do POST
+neste banco novo; em outro banco use o ID realmente retornado, nunca um ID fixo
+que possa pertencer a um projeto existente. POST cria rascunho: ele não aparece
+no GET público. Ao final havia novamente os seis projetos e seis tecnologias
+originais do setup; somente o registro temporário foi excluído.
+
+### Aula 21: API em Node
+
+Entrada: `PortfolioAngular/api-node/server.js`. Express e CORS estão instalados;
+a leitura pública foi verificada na seção Aula 22 abaixo.
+
+### Aula 22: a API lê do banco
+
+#### GET da lista sem token
+
+```sh
+curl -i -X GET http://localhost:3000/api/projetos
+```
+
+```http
+HTTP/1.1 200 OK
+
+[{"id":5,"nome":"API de Clima","descricao":"Microsservico que consome uma API publica e devolve a previsao em JSON.","tecnologias":"PHP, REST","link_github":"https://github.com/usuario/clima","ano":2026},{"id":1,"nome":"Portfolio Pessoal","descricao":"Site de portfolio responsivo com PHP, PDO e MariaDB, painel admin e login.","tecnologias":"PHP, MariaDB, CSS, Git","link_github":"https://github.com/usuario/portfolio","ano":2026},{"id":3,"nome":"App de Tarefas","descricao":"Lista de tarefas com categorias, prazos e filtro por status.","tecnologias":"JavaScript, HTML, CSS","link_github":"https://github.com/usuario/tarefas","ano":2025},{"id":2,"nome":"Sistema de Biblioteca","descricao":"CRUD de acervo e emprestimos, com busca e relatorios.","tecnologias":"PHP, MariaDB, Bootstrap","link_github":"https://github.com/usuario/biblioteca","ano":2025},{"id":4,"nome":"Loja Virtual (prototipo)","descricao":"Catalogo de produtos com carrinho e checkout simulado.","tecnologias":"PHP, MariaDB, JavaScript","link_github":"https://github.com/usuario/loja","ano":2024}]
+```
+
+#### GET por ID sem token
+
+```sh
+curl -i -X GET http://localhost:3000/api/projetos/5
+```
+
+```http
+HTTP/1.1 200 OK
+
+{"id":5,"nome":"API de Clima","descricao":"Microsservico que consome uma API publica e devolve a previsao em JSON.","tecnologias":"PHP, REST","link_github":"https://github.com/usuario/clima","ano":2026}
+```
+
+#### GET do catálogo sem token
+
+```sh
+curl -i -X GET http://localhost:3000/api/tecnologias
+```
+
+```http
+HTTP/1.1 200 OK
+
+[{"id":4,"nome":"PHP","categoria":"Backend","descricao":"Linguagem server-side para web dinamica.","ano_criacao":1994},{"id":5,"nome":"MariaDB","categoria":"Banco de Dados","descricao":"SGBD relacional open-source.","ano_criacao":2009},{"id":6,"nome":"Git","categoria":"DevOps","descricao":"Sistema de controle de versao distribuido.","ano_criacao":2005},{"id":2,"nome":"CSS","categoria":"Frontend","descricao":"Linguagem de estilos para apresentacao visual.","ano_criacao":1996},{"id":1,"nome":"HTML","categoria":"Frontend","descricao":"Linguagem de marcacao para estrutura de paginas.","ano_criacao":1993},{"id":3,"nome":"JavaScript","categoria":"Frontend","descricao":"Linguagem de programacao para o navegador.","ano_criacao":1995}]
+```
+
+#### GET rascunho sem token
+
+```sh
+curl -i -X GET http://localhost:3000/api/projetos/6
+```
+
+```http
+HTTP/1.1 404 Not Found
+
+{"erro":"Projeto nao encontrado"}
+```
+
+#### GET ID inexistente
+
+```sh
+curl -i -X GET http://localhost:3000/api/projetos/999999
+```
+
+```http
+HTTP/1.1 404 Not Found
+
+{"erro":"Projeto nao encontrado"}
+```
 
 ### Aula 23: a API cria, altera e apaga
 
-A API em uso e a de `api-node/`. Os arquivos `api/*.php` e `conexao.php` ficam no repositorio como historico do 2o trimestre.
+Na versão atual as três escritas exigem token; obtenha-o no login da Aula 24.
+Estes exemplos usam o registro temporário criado pelo POST. O PUT devolve uma
+mensagem e o DELETE não devolve JSON quando responde 204.
 
-    curl -i -X POST http://localhost:3000/api/projetos -H "Content-Type: application/json" -d '{"nome":"Projeto de teste","ano":2026}'
-    curl -i -X PUT http://localhost:3000/api/projetos/7 -H "Content-Type: application/json" -d '{"nome":"Projeto de teste (editado)","ano":2026}'
-    curl -i -X DELETE http://localhost:3000/api/projetos/7
+#### POST com token
+
+```sh
+curl -i -X POST http://localhost:3000/api/projetos -H 'Authorization: Bearer <token>' -H 'Content-Type: application/json' -d '{"nome":"Projeto de teste Entrega A","descricao":"Registro temporario para validar o CRUD.","tecnologias":"Node, MariaDB","link_github":"","ano":2026}'
+```
+
+```http
+HTTP/1.1 201 Created
+
+{"id":7}
+```
+
+#### PUT com token
+
+```sh
+curl -i -X PUT http://localhost:3000/api/projetos/7 -H 'Authorization: Bearer <token>' -H 'Content-Type: application/json' -d '{"nome":"Projeto de teste Entrega A (editado)","descricao":"Registro temporario para validar o CRUD.","tecnologias":"Node, MariaDB","link_github":"","ano":2026}'
+```
+
+```http
+HTTP/1.1 200 OK
+
+{"mensagem":"Projeto atualizado"}
+```
+
+#### DELETE com token
+
+```sh
+curl -i -X DELETE http://localhost:3000/api/projetos/7 -H 'Authorization: Bearer <token>'
+```
+
+```http
+HTTP/1.1 204 No Content
+
+```
+
+Sem corpo na resposta (zero bytes).
+
+#### POST com token e sem nome
+
+```sh
+curl -i -X POST http://localhost:3000/api/projetos -H 'Authorization: Bearer <token>' -H 'Content-Type: application/json' -d '{}'
+```
+
+```http
+HTTP/1.1 400 Bad Request
+
+{"erro":"Informe pelo menos o nome do projeto"}
+```
+
+#### PUT com token e sem nome
+
+```sh
+curl -i -X PUT http://localhost:3000/api/projetos/7 -H 'Authorization: Bearer <token>' -H 'Content-Type: application/json' -d '{}'
+```
+
+```http
+HTTP/1.1 400 Bad Request
+
+{"erro":"Informe pelo menos o nome do projeto"}
+```
+
+#### PUT ID inexistente
+
+```sh
+curl -i -X PUT http://localhost:3000/api/projetos/999999 -H 'Authorization: Bearer <token>' -H 'Content-Type: application/json' -d '{"nome":"Projeto de teste Entrega A","descricao":"Registro temporario para validar o CRUD.","tecnologias":"Node, MariaDB","link_github":"","ano":2026}'
+```
+
+```http
+HTTP/1.1 404 Not Found
+
+{"erro":"Projeto nao encontrado"}
+```
+
+#### DELETE ID já removido
+
+```sh
+curl -i -X DELETE http://localhost:3000/api/projetos/7 -H 'Authorization: Bearer <token>'
+```
+
+```http
+HTTP/1.1 404 Not Found
+
+{"erro":"Projeto nao encontrado"}
+```
+
+#### GET do rascunho criado
+
+```sh
+curl -i -X GET http://localhost:3000/api/projetos/7
+```
+
+```http
+HTTP/1.1 404 Not Found
+
+{"erro":"Projeto nao encontrado"}
+```
 
 ### Aula 24: a tranca
 
-Quem escreve precisa de um token. Antes do primeiro uso, crie a tabela e o dono:
+Os sete testes solicitados estão abaixo. No login incorreto, `<senha>` representa
+uma senha diferente da cadastrada. A senha errada e o email inexistente recebem
+a mesma mensagem, evitando revelar pela resposta se aquele email está cadastrado.
+A validade atual permanece a do código das aulas (`2h`); não implementei uma
+escolha de validade de nível B nesta correção documental.
 
-    sudo mariadb dwii_db < sql/usuarios.sql
-    cd api-node
-    npm install
-    node criar-usuario.js dono@portfolio.dev portfolio2026
+#### Login correto
 
-Login e escrita com o token:
+```sh
+curl -i -X POST http://localhost:3000/api/login -H 'Content-Type: application/json' -d '{"email":"teste.entrega-a@example.invalid","senha":"<senha>"}'
+```
 
-    curl -i -X POST http://localhost:3000/api/login -H "Content-Type: application/json" -d '{"email":"dono@portfolio.dev","senha":"portfolio2026"}'
-    curl -i -X POST http://localhost:3000/api/projetos -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d '{"nome":"Projeto com tranca","ano":2026}'
-    curl -i -X PUT http://localhost:3000/api/projetos/8 -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d '{"nome":"Projeto com tranca (editado)","ano":2026}'
+```http
+HTTP/1.1 200 OK
+
+{"token":"<token>"}
+```
+
+#### Login incorreto (senha errada)
+
+```sh
+curl -i -X POST http://localhost:3000/api/login -H 'Content-Type: application/json' -d '{"email":"teste.entrega-a@example.invalid","senha":"<senha>"}'
+```
+
+```http
+HTTP/1.1 401 Unauthorized
+
+{"erro":"Email ou senha invalidos"}
+```
+
+#### POST sem token
+
+```sh
+curl -i -X POST http://localhost:3000/api/projetos -H 'Content-Type: application/json' -d '{"nome":"Projeto de teste Entrega A","descricao":"Registro temporario para validar o CRUD.","tecnologias":"Node, MariaDB","link_github":"","ano":2026}'
+```
+
+```http
+HTTP/1.1 401 Unauthorized
+
+{"erro":"Token ausente"}
+```
+
+#### POST com token
+
+```sh
+curl -i -X POST http://localhost:3000/api/projetos -H 'Authorization: Bearer <token>' -H 'Content-Type: application/json' -d '{"nome":"Projeto de teste Entrega A","descricao":"Registro temporario para validar o CRUD.","tecnologias":"Node, MariaDB","link_github":"","ano":2026}'
+```
+
+```http
+HTTP/1.1 201 Created
+
+{"id":7}
+```
+
+#### PUT com token
+
+```sh
+curl -i -X PUT http://localhost:3000/api/projetos/7 -H 'Authorization: Bearer <token>' -H 'Content-Type: application/json' -d '{"nome":"Projeto de teste Entrega A (editado)","descricao":"Registro temporario para validar o CRUD.","tecnologias":"Node, MariaDB","link_github":"","ano":2026}'
+```
+
+```http
+HTTP/1.1 200 OK
+
+{"mensagem":"Projeto atualizado"}
+```
+
+#### DELETE sem token
+
+```sh
+curl -i -X DELETE http://localhost:3000/api/projetos/7
+```
+
+```http
+HTTP/1.1 401 Unauthorized
+
+{"erro":"Token ausente"}
+```
+
+#### GET da lista sem token
+
+```sh
+curl -i -X GET http://localhost:3000/api/projetos
+```
+
+```http
+HTTP/1.1 200 OK
+
+[{"id":5,"nome":"API de Clima","descricao":"Microsservico que consome uma API publica e devolve a previsao em JSON.","tecnologias":"PHP, REST","link_github":"https://github.com/usuario/clima","ano":2026},{"id":1,"nome":"Portfolio Pessoal","descricao":"Site de portfolio responsivo com PHP, PDO e MariaDB, painel admin e login.","tecnologias":"PHP, MariaDB, CSS, Git","link_github":"https://github.com/usuario/portfolio","ano":2026},{"id":3,"nome":"App de Tarefas","descricao":"Lista de tarefas com categorias, prazos e filtro por status.","tecnologias":"JavaScript, HTML, CSS","link_github":"https://github.com/usuario/tarefas","ano":2025},{"id":2,"nome":"Sistema de Biblioteca","descricao":"CRUD de acervo e emprestimos, com busca e relatorios.","tecnologias":"PHP, MariaDB, Bootstrap","link_github":"https://github.com/usuario/biblioteca","ano":2025},{"id":4,"nome":"Loja Virtual (prototipo)","descricao":"Catalogo de produtos com carrinho e checkout simulado.","tecnologias":"PHP, MariaDB, JavaScript","link_github":"https://github.com/usuario/loja","ano":2024}]
+```
+
+#### Login com email inexistente
+
+```sh
+curl -i -X POST http://localhost:3000/api/login -H 'Content-Type: application/json' -d '{"email":"inexistente@example.invalid","senha":"<senha>"}'
+```
+
+```http
+HTTP/1.1 401 Unauthorized
+
+{"erro":"Email ou senha invalidos"}
+```
+
+#### Login sem campos
+
+```sh
+curl -i -X POST http://localhost:3000/api/login -H 'Content-Type: application/json' -d '{}'
+```
+
+```http
+HTTP/1.1 400 Bad Request
+
+{"erro":"Informe email e senha"}
+```
+
+#### PUT sem token
+
+```sh
+curl -i -X PUT http://localhost:3000/api/projetos/7 -H 'Content-Type: application/json' -d '{"nome":"Projeto de teste Entrega A","descricao":"Registro temporario para validar o CRUD.","tecnologias":"Node, MariaDB","link_github":"","ano":2026}'
+```
+
+```http
+HTTP/1.1 401 Unauthorized
+
+{"erro":"Token ausente"}
+```
+
+#### POST com token inválido
+
+```sh
+curl -i -X POST http://localhost:3000/api/projetos -H 'Authorization: Bearer <token>' -H 'Content-Type: application/json' -d '{"nome":"Projeto de teste Entrega A","descricao":"Registro temporario para validar o CRUD.","tecnologias":"Node, MariaDB","link_github":"","ano":2026}'
+```
+
+```http
+HTTP/1.1 401 Unauthorized
+
+{"erro":"Token invalido ou expirado"}
+```
+
+### Falha do banco em JSON
+
+Desliguei somente o container de teste para executar esta requisição. O caminho
+na mensagem é do ambiente de teste. Depois reiniciei o banco e confirmei que o
+GET voltou a responder 200. Não desligue um banco compartilhado para repetir.
+
+#### GET com banco de teste desligado
+
+```sh
+curl -i http://localhost:3000/api/projetos
+```
+
+```http
+HTTP/1.1 500 Internal Server Error
+
+{"erro":"Falha no servidor: connect ENOENT /workspace/work/entrega-a/socket/mysqld.sock"}
+```
+
+### Evidência do armazenamento de senha
+
+Consulta realmente executada no banco de teste (hash completo não publicado):
+
+```sql
+SELECT id, email, LEFT(senha_hash, 4) AS prefixo_bcrypt,
+       CHAR_LENGTH(senha_hash) AS caracteres_hash
+FROM usuarios;
+```
+
+```text
+id  email                            prefixo_bcrypt  caracteres_hash
+1   teste.entrega-a@example.invalid   $2b$            60
+```
+
+O login correto confirma a comparação com o hash. A criação usa `bcrypt.hash`
+em `criar-usuario.js`, linhas 13–14; o login usa `bcrypt.compare` em `server.js`,
+linha 91. A tabela tem `senha_hash CHAR(60)` em `sql/usuarios.sql`, nunca uma
+coluna para armazenar a senha em texto.
+
+### Rotas, verbos e token
+
+Todos os caminhos de arquivos de código nesta autoavaliação partem de
+`PortfolioAngular/`.
+
+| Rota | Verbo | Token obrigatório | Resultado principal |
+| --- | --- | --- | --- |
+| `/api/login` | POST | Não | 200 com token; 400 sem campos; 401 credenciais inválidas |
+| `/api/projetos` | GET | Não | 200, só publicados |
+| `/api/projetos/:id` | GET | Não | 200 publicado ou 404 em JSON |
+| `/api/projetos` | POST | Sim | 201 com id; 400 sem nome |
+| `/api/projetos/:id` | PUT | Sim | 200 ou 404; 400 sem nome |
+| `/api/projetos/:id` | DELETE | Sim | 204 sem corpo ou 404 |
+| `/api/tecnologias` | GET | Não | 200, só ativos |
+
+Escrita sem token responde 401 antes de consultar o banco. O middleware
+`autenticar` é único (`api-node/server.js`, linhas 23–37), com `jwt.verify` e
+`next()`, aplicado ao POST, PUT e DELETE nas linhas 110, 140 e 170. As consultas
+que recebem dados do cliente usam `?` e `pool.execute`, inclusive login e criação
+do usuário. Os SELECTs de lista são SQL fixo, sem entrada do cliente.
+
+### O que esta API ainda não faz
+
+- Não oferece POST, PUT ou DELETE para `/api/tecnologias`; o catálogo é somente leitura.
+- Não oferece leitura autenticada de todos os projetos (incluindo rascunhos) em `/api/projetos/todos`.
+
+O segredo JWT ainda está no código e não pode ser tratado como segredo em produção:
+qualquer leitor do repositório pode conhecê-lo. A Aula 29 prevê movê-lo para `.env`,
+fora do versionamento; ao migrar é necessário usar um segredo novo. Essa migração
+não foi antecipada como parte desta correção.
+
+### Autoavaliação — Entrega A
+
+Espero **C**, com base nos requisitos visíveis nos prints e nas evidências abaixo.
+Não reivindico B ou A, e esta correção não cria funcionalidades desses níveis.
+O conceito final é o menor dos três critérios; a decisão cabe ao professor.
+
+| Critério | C: evidência no estado atual | B: o que falta | A: o que falta |
+| --- | --- | --- | --- |
+| 1. Cinco operações | `api-node/server.js`: GETs nas linhas 45–69; POST 110–137 (201/id e 400 sem nome); PUT 140–167 (200/404 por `affectedRows`); DELETE 170–185 (204/404). `express.json()` na linha 20, SQL com `?`, `try/catch` e 500 JSON. Respostas reais nas seções Aula 22, Aula 23 e Falha do banco em JSON. | Escritas protegidas do catálogo de tecnologias. | Além de B, GET `/api/projetos/todos` protegido, antes de `/:id`, incluindo rascunhos. |
+| 2. Tranca | `sql/usuarios.sql`; `api-node/criar-usuario.js`, linhas 13–14; `api-node/server.js`, linhas 23–37 e 72–107. Sete testes na seção Aula 24, mais 400, token inválido e PUT sem token. Hash verificado por SQL acima. | Dono com email próprio e senha privada definida por ele; validade diferente de 2h com justificativa; mensagens próprias. O usuário desta execução é temporário e não comprova escolha pessoal do dono. | Também depende de B; middleware único já existe. A explicação sobre o segredo e a Aula 29 consta acima. |
+| 3. README e histórico | Como rodar do zero na ordem banco → setup.sql → usuarios.sql → dependências → criar-usuario.js → server.js. Cada curl com status e corpo (ou indicação de ausência). `api-node/.gitignore` já contém `node_modules/`, sem dependências versionadas. Os quatro commits originais estão listados abaixo. | Sete testes e dois limites já documentados; para B geral ainda faltam os requisitos dos critérios 1 e 2. | Tabela rota × verbo × token e nota do segredo já documentadas; para A geral faltam B e a leitura protegida. |
+
+Histórico existente, consultado com `git log --oneline --grep='Aula 2[1-4]'`:
+
+- `17e041f` — Aula 21: API do Portfolio em Node, GET /api/projetos com cors
+- `e72b118` — Aula 22: API em Node le projetos e catalogo do MariaDB com mysql2
+- `3b5b73d` — Aula 23: API em Node cria, altera e apaga projetos com POST, PUT e DELETE
+- `e2aa48c` — Aula 24: API em Node com login, token JWT e middleware autenticar nas rotas de escrita
+
+Esses commits são anteriores à correção. Não foram recriados nem tiveram datas
+alteradas. O link público da raiz foi consultado sem autenticação e respondeu 200.
+`git ls-files '*node_modules*'` não retornou arquivos.
+
+Limite da revisão: os prints informam os principais status do contrato da Aula 19,
+mas não trazem sua tabela completa de entradas e respostas. Para comparar o contrato
+integralmente, falta o trecho da Aula 19 que define os campos obrigatórios/opcionais,
+as validações de `nome`, `ano` e `status` no POST/PUT e os formatos de resposta.
+Os testes aqui comprovam o contrato explicitamente visível nos prints; não afirmam
+validações adicionais que não foram especificadas ali.
+
+---
 
 ### Aula 25: o Portfolio em React
 
@@ -132,3 +602,11 @@ Os projetos sairam do `App.jsx` e moram em `src/projetos.js`. A tela os desenha 
 
 O formulario de contato (`src/Contato.jsx`) guarda o que a pessoa digita no estado, com `useState`.
 Ele ainda nao envia nada: avisa e limpa os campos. O envio de verdade chega com a API.
+
+### Declaração de uso de IA nesta correção
+
+Usei o Codex (IA) para revisar os critérios e os arquivos, configurar um banco de
+teste isolado, executar e conferir requisições reais, registrar as respostas no
+README, corrigir os caminhos de execução e permitir configurar o socket de teste
+em `db.js`. A finalidade foi corrigir a ausência de evidências apontada pelo
+professor e documentar os limites encontrados, sem inventar resultados ou histórico.
