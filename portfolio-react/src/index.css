@@ -130,3 +130,17 @@ textarea { min-height: 160px; resize: vertical; }
   .rodape-escola { flex-basis: 100%; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Aula 27: estados dos pedidos e catálogo, mantendo a paleta e os cards retos. */
+.estado-pedido { margin-bottom: 28px; text-align: center; }
+.erro { color: #b91c1c; font-weight: 700; overflow-wrap: anywhere; }
+.catalogo { padding-block: 86px 90px; }
+.catalogo .eyebrow { color: #a83a2d; }
+.catalogo-lista { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; list-style: none; padding: 0; margin: 0; }
+.catalogo-lista li { min-width: 0; background: var(--cinza); border-top: 6px solid var(--coral); padding: 28px; overflow-wrap: anywhere; }
+.catalogo-lista strong { display: block; font-size: 25px; line-height: 1.2; }
+.catalogo-lista span { display: block; margin-top: 14px; font-size: 16px; color: #505650; }
+@media (max-width: 700px) {
+  .catalogo { padding-block: 54px; }
+  .catalogo-lista { grid-template-columns: 1fr; gap: 22px; }
+}

@@ -603,6 +603,130 @@ Os projetos sairam do `App.jsx` e moram em `src/projetos.js`. A tela os desenha 
 O formulario de contato (`src/Contato.jsx`) guarda o que a pessoa digita no estado, com `useState`.
 Ele ainda nao envia nada: avisa e limpa os campos. O envio de verdade chega com a API.
 
+### Aula 27: o Portfólio com dados reais
+
+A atividade é um **checkpoint sem envio nem nota pelo AVA**. O registro é o
+commit no GitHub, conforme os materiais da Aula 27. A avaliação anônima da aula
+é um recurso separado; não foi preenchida por esta implementação.
+
+#### O que foi implementado
+
+- `portfolio-react/src/api.js` centraliza a URL pública da porta 3000, sem barra
+  final. O endereço é o já usado pelos serviços deste mesmo portfólio:
+  `https://stunning-robot-4j4rwr9vjvq43qqj7-3000.app.github.dev`.
+  Os GETs públicos de projetos e tecnologias responderam 200 em 16/11/2026.
+  A consulta aos detalhes do Codespace pela integração retornou 403; a
+  confirmação disponível foi pelos serviços existentes e pelas respostas públicas,
+  não por acesso ao painel PORTS.
+- `App.jsx` começa com `projetos = []`. O `useEffect` com dependências `[]`
+  chama a função `buscarProjetos`, que faz `fetch` de `/api/projetos`, confere
+  `resposta.ok` antes de `.json()` e preenche o estado usado pelo `map` dos
+  `CardProjeto`, mantendo `key={p.id}` e os campos dos cards.
+- Estados `carregando` e `erro` mostram “Carregando projetos...” e aviso em
+  vermelho. O `finally` encerra a espera tanto em sucesso quanto em falha.
+  Uma lista vazia tem mensagem própria; uma resposta que não seja uma lista
+  produz erro em vez de quebrar o `map`.
+- `Catalogo.jsx` busca `/api/tecnologias` em um efeito com `[]`, com seus próprios
+  estados de carregamento e erro. A lista `ul` mostra nome e categoria, com
+  `key={tecnologia.id}`. O catálogo fica entre projetos e contato e reaproveita
+  a paleta e as medidas do layout, com CSS específico para seus itens.
+- Os efeitos cancelam os pedidos ao sair da tela com `AbortController`. No
+  desenvolvimento, o `StrictMode` verifica montagem/limpeza novamente; isso
+  pode gerar pedidos cancelados na aba Network, sem um ciclo infinito de buscas.
+- `src/projetos.js` foi removido conforme o Checkpoint. A tela exibe o que a API
+  retorna, sem lista fixa ou fallback. Os quatro registros da Aula 26 permanecem
+  no histórico (`4014097:portfolio-react/src/projetos.js`); não foram migrados
+  nem apagados do banco. Na verificação, a API tinha sete projetos publicados,
+  diferentes dos quatro antigos do front, e seis tecnologias.
+- O visual anterior, o componente dos cards, o formulário local de contato,
+  Angular, API, SQLs e dependências foram preservados.
+
+#### Como iniciar API e front no Codespace
+
+Use dois terminais, ambos inicialmente na **raiz do repositório**. O banco já
+configurado nas aulas anteriores deve ser preservado: não reimporte `setup.sql`,
+pois ele contém `DROP TABLE`. Para uma instalação nova, veja o passo a passo da
+seção “Como rodar do zero” da Entrega A acima.
+
+Terminal da API:
+
+```sh
+sudo service mariadb start
+cd PortfolioAngular/api-node
+npm ci
+node server.js
+```
+
+A conexão padrão usa o socket local configurado em `db.js`. Deixe a API em
+execução. No painel **PORTS**, confira a porta **3000** como **Public** e copie
+seu endereço encaminhado. Se o Codespace mudou, atualize somente a constante
+em `portfolio-react/src/api.js`, sem barra no final. A URL pública não deve
+pedir login nem devolver uma página HTML.
+
+Terminal do front, partindo novamente da raiz:
+
+```sh
+cd portfolio-react
+npm ci
+npm run dev -- --host 0.0.0.0
+```
+
+Abra a porta 5173. O front deve mostrar os registros que a sua API retornar,
+não necessariamente quatro cards. Os GETs públicos não precisam de token.
+
+Para diagnosticar no Codespace, use um terceiro terminal:
+
+```sh
+curl -i http://localhost:3000/api/projetos
+curl -i http://localhost:3000/api/tecnologias
+```
+
+Esses comandos são instruções de verificação no Codespace, não transcrições
+novas de resultados. Primeiro confira a API; depois Console/Network do navegador;
+por último, o estado do componente. Se localmente funciona e a URL pública não,
+confira a visibilidade Public da porta 3000 e se o endereço ainda corresponde
+ao Codespace atual.
+
+#### Testes realizados nesta implementação
+
+Verificação em 16/11/2026, no ambiente do Codex:
+
+- `npm run build` e `npm run lint`: concluídos sem falhas.
+- `curl` nas duas rotas públicas: HTTP 200 com JSON e CORS permitindo a leitura.
+- Chromium/Playwright em 1440, 390 e 320 px: nomes dos sete cards e nomes/categorias
+  das seis tecnologias conferidos contra as respostas reais da API; sem avisos
+  de `key`, erros de JavaScript ou rolagem horizontal. Capturas desktop e celular
+  inspecionadas. Navegação e formulário local (contador, aviso, limpeza dos três
+  campos e ausência de novas buscas ao digitar) conferidos.
+- Respostas reais atrasadas no teste: as mensagens de carregamento aparecem e
+  somem quando os dados chegam.
+- HTTP 404 real: o transporte do teste direcionou os pedidos para a rota
+  inexistente `/api/projeto` da mesma API. A tela mostrou “a API respondeu 404”,
+  sem tentar converter o HTML em JSON e sem manter o carregamento.
+- Conexão recusada **simulada no navegador**: projetos e catálogo mostraram
+  aviso vermelho e encerraram a espera. Também foram testadas, com respostas
+  artificiais explícitas, lista vazia e JSON com formato incorreto.
+- Falha somente nos projetos: o catálogo continuou carregando seus dados reais,
+  demonstrando que os estados são independentes.
+
+**Limite do ambiente de teste:** o Chromium direto recusou o certificado do
+proxy do ambiente (`ERR_CERT_AUTHORITY_INVALID`), embora o `curl` e o cliente HTTP
+do Playwright alcançassem a API com a CA configurada. Nos testes com dados reais,
+o cliente HTTP do Playwright fez os GETs públicos e encaminhou suas respostas
+originais ao navegador; não foram usados dados fixos nem desativada a validação
+TLS. Sem esse transporte de teste, o front mostrou corretamente “Failed to fetch”
+para as duas listas. Essa adaptação existe apenas nos testes, fora do repositório.
+
+Não foi possível parar a API **no Codespace** pela integração (acesso aos detalhes
+retornou 403). Portanto, não afirmo ter feito o desligamento remoto real. Para
+conferi-lo no seu navegador: use Ctrl+C no terminal da API, recarregue o front,
+confirme os dois avisos vermelhos e a ausência de “Carregando”; depois execute
+`node server.js` no mesmo terminal e recarregue. A retomada deve mostrar os dados.
+
+Uso de IA nesta aula: o Codex foi usado para ler os materiais, implementar a
+integração no React e executar/verificar os testes descritos. Isso não representa
+respostas pessoais de caderno nem o preenchimento da avaliação anônima da aula.
+
 ### Declaração de uso de IA nesta correção
 
 Usei o Codex (IA) para revisar os critérios e os arquivos, configurar um banco de
