@@ -36,8 +36,7 @@ function Catalogo() {
   return (
     <section id="catalogo" className="catalogo" aria-labelledby="titulo-catalogo">
       <div className="container">
-        <div className="section-heading central">
-          <p className="eyebrow">Tecnologias</p>
+        <div className="section-heading">
           <h2 id="titulo-catalogo">Catálogo de tecnologias</h2>
         </div>
         {carregando && <p className="estado-pedido" role="status">Carregando tecnologias...</p>}

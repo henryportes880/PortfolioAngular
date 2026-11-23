@@ -4,6 +4,7 @@ import CardProjeto from './CardProjeto.jsx';
 import Catalogo from './Catalogo.jsx';
 import Contato from './Contato.jsx';
 import Seta from './Seta.jsx';
+import fotoEditorial from './assets/abertura-editorial.webp';
 
 function Inicio() {
   const [projetos, setProjetos] = useState([]);
@@ -41,39 +42,24 @@ function Inicio() {
   return (
     <>
       <section id="inicio" className="apresentacao" aria-labelledby="titulo-inicio">
-        <div className="container hero-grid">
-          <div className="hero-identidade">
-            <p className="eyebrow">Portfólio pessoal</p>
-            <p className="hero-nome">Henry<br />Portes<span>.</span></p>
-            <p className="hero-area">Informática & desenvolvimento web</p>
-          </div>
+        <div className="container hero">
           <div className="hero-texto">
-            <h1 id="titulo-inicio">Entre o código<br />e a curiosidade.</h1>
-            <p>Sou Henry Portes, estudante do Técnico em Informática integrado ao ensino médio no IFPR — Campus Ponta Grossa.</p>
-            <a className="botao" href="#projetos">Explore os projetos <Seta direcao="baixo" /></a>
+            <p className="rotulo">Portfólio</p>
+            <h1 id="titulo-inicio">Henry<br />Portes<span aria-hidden="true" /></h1>
+            <p className="hero-area">Desenvolvimento web</p>
+            <a className="botao" href="#projetos">Ver projetos <Seta direcao="baixo" /></a>
           </div>
-        </div>
-      </section>
-      <section id="sobre" className="sobre" aria-labelledby="titulo-sobre">
-        <div className="container">
-          <div className="section-heading central">
-            <p className="eyebrow">Sobre mim</p>
-            <h2 id="titulo-sobre">Aprendendo e construindo.</h2>
-            <p>Este é meu espaço para reunir o que estudo e construo, um projeto de cada vez.</p>
-          </div>
-          <div className="sobre-grid">
-            <article><span className="indice" aria-hidden="true">01</span><h3>Formação</h3><p>Técnico em Informática integrado ao ensino médio.</p><p>IFPR — Campus Ponta Grossa</p></article>
-            <article><span className="indice" aria-hidden="true">02</span><h3>Desenvolvimento web</h3><p>Angular, TypeScript e React no portfólio. PHP, Node e MariaDB nos projetos de APIs.</p></article>
-            <article><span className="indice" aria-hidden="true">03</span><h3>Estudo na prática</h3><p>Do primeiro cadastro à API: projetos que fazem parte do meu aprendizado.</p><a className="text-link" href="#projetos">Conheça os projetos <Seta /></a></article>
-          </div>
+          <figure className="hero-foto">
+            <img src={fotoEditorial} alt="" fetchPriority="high" />
+            <figcaption>Imagem editorial criada com IA</figcaption>
+          </figure>
         </div>
       </section>
       <section id="projetos" className="projetos" aria-labelledby="titulo-projetos">
         <div className="container">
-          <div className="section-heading central">
-            <p className="eyebrow">Projetos</p>
-            <h2 id="titulo-projetos">Estudos que viram prática.</h2>
-            <p>Projetos do meu aprendizado em desenvolvimento web.</p>
+          <div className="section-heading">
+            <h2 id="titulo-projetos">Projetos</h2>
+            <p>Estudos e projetos que desenvolvi na prática, do primeiro cadastro às APIs.</p>
           </div>
           {carregando && <p className="estado-pedido" role="status">Carregando projetos...</p>}
           {erro && <p className="estado-pedido erro" role="alert">{erro}</p>}
@@ -88,6 +74,15 @@ function Inicio() {
         </div>
       </section>
       <Catalogo />
+      <section id="sobre" className="sobre" aria-labelledby="titulo-sobre">
+        <div className="container sobre-grid">
+          <h2 id="titulo-sobre">Sobre mim</h2>
+          <div className="sobre-texto">
+            <p>Sou Henry Portes, estudante do Técnico em Informática integrado ao ensino médio no IFPR — Campus Ponta Grossa.</p>
+            <p>Trabalho com Angular, TypeScript e React no portfólio e estudo APIs com PHP, Node e MariaDB.</p>
+          </div>
+        </div>
+      </section>
       <Contato />
     </>
   );

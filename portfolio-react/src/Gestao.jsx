@@ -88,35 +88,39 @@ function PainelProjetos({ token, encerrarSessao }) {
   }
 
   return (
-    <>
-      <FormProjeto
-        key={editando?.id ?? 'novo'}
-        projeto={editando}
-        bloqueado={enviando}
-        cancelar={() => setEditando(null)}
-        salvar={(dados) => editando
-          ? escrever('PUT', editando.id, dados)
-          : escrever('POST', null, { ...dados, status: 'publicado' })}
-      />
-      {aviso && <p role="status">{aviso}</p>}
-      {erro && <p className="erro" role="alert">{erro}</p>}
+    <div className="gestao-painel">
+      <div>
+        <FormProjeto
+          key={editando?.id ?? 'novo'}
+          projeto={editando}
+          bloqueado={enviando}
+          cancelar={() => setEditando(null)}
+          salvar={(dados) => editando
+            ? escrever('PUT', editando.id, dados)
+            : escrever('POST', null, { ...dados, status: 'publicado' })}
+        />
+        {aviso && <p className="estado-pedido" role="status">{aviso}</p>}
+        {erro && <p className="estado-pedido erro" role="alert">{erro}</p>}
+      </div>
 
-      <h2>Projetos publicados</h2>
-      {carregando && <p role="status">Carregando projetos...</p>}
-      {erroLista && <p className="erro" role="alert">{erroLista}</p>}
-      {!carregando && !erroLista && projetos.length === 0 && <p>Nenhum projeto publicado ainda.</p>}
-      <ul className="gestao-lista">
-        {projetos.map((projeto) => (
-          <li key={projeto.id}>
-            <strong>{projeto.nome}</strong>
-            <div className="gestao-acoes">
-              <button type="button" disabled={enviando || carregando} onClick={() => setEditando(projeto)}>Editar</button>
-              <button type="button" disabled={enviando || carregando} onClick={() => excluir(projeto)}>Excluir</button>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </>
+      <section className="gestao-publicados" aria-labelledby="titulo-publicados">
+        <h2 id="titulo-publicados">Projetos publicados</h2>
+        {carregando && <p className="estado-pedido" role="status">Carregando projetos...</p>}
+        {erroLista && <p className="estado-pedido erro" role="alert">{erroLista}</p>}
+        {!carregando && !erroLista && projetos.length === 0 && <p className="estado-pedido">Nenhum projeto publicado ainda.</p>}
+        <ul className="gestao-lista">
+          {projetos.map((projeto) => (
+            <li key={projeto.id}>
+              <strong>{projeto.nome}</strong>
+              <div className="gestao-acoes">
+                <button className="botao-secundario" type="button" disabled={enviando || carregando} onClick={() => setEditando(projeto)}>Editar</button>
+                <button className="botao-perigo" type="button" disabled={enviando || carregando} onClick={() => excluir(projeto)}>Excluir</button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
   );
 }
 
@@ -168,12 +172,12 @@ function Gestao() {
     <section className="container pagina-interna gestao">
       <div className="gestao-topo">
         <h1>Gestão</h1>
-        {token && <button type="button" onClick={() => encerrarSessao()}>Sair</button>}
+        {token && <button className="botao-secundario" type="button" onClick={() => encerrarSessao()}>Sair</button>}
       </div>
       {token ? (
         <PainelProjetos token={token} encerrarSessao={encerrarSessao} />
       ) : (
-        <form onSubmit={entrar}>
+        <form className="gestao-form gestao-login" onSubmit={entrar}>
           <label className="campo">E-mail
             <input name="email" type="email" autoComplete="username" required />
           </label>
@@ -181,7 +185,7 @@ function Gestao() {
             <input name="senha" type="password" autoComplete="current-password" required />
           </label>
           <button type="submit" disabled={entrando}>Entrar</button>
-          {erro && <p className="erro" role="alert">{erro}</p>}
+          {erro && <p className="estado-pedido erro" role="alert">{erro}</p>}
         </form>
       )}
     </section>

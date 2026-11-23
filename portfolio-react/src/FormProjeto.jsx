@@ -13,7 +13,7 @@ function FormProjeto({ projeto, bloqueado, cancelar, salvar }) {
   }
 
   return (
-    <form onSubmit={enviar}>
+    <form className="gestao-form" onSubmit={enviar}>
       <h2>{projeto ? 'Editar projeto' : 'Novo projeto'}</h2>
       <fieldset disabled={bloqueado}>
         <label className="campo">Nome
@@ -33,7 +33,7 @@ function FormProjeto({ projeto, bloqueado, cancelar, salvar }) {
         </label>
         <div className="gestao-acoes">
           <button type="submit">Salvar</button>
-          {projeto && <button type="button" onClick={cancelar}>Cancelar</button>}
+          {projeto && <button className="botao-secundario" type="button" onClick={cancelar}>Cancelar</button>}
         </div>
       </fieldset>
     </form>

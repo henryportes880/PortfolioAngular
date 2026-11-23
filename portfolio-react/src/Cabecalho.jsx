@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import Seta from './Seta.jsx';
 
 // Cabecalho: a barra de topo do Portfolio, com o nome e os links.
@@ -7,15 +7,12 @@ function Cabecalho() {
   return (
     <header className="cabecalho container">
       <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
-      <Link className="identidade" to="/" aria-label="Henry Portes — início">
-        <span className="monograma" aria-hidden="true">hp.</span>
-        <span>Henry Portes</span>
-      </Link>
+      <Link className="identidade" to="/" aria-label="Henry Portes — início">Henry Portes</Link>
       <nav aria-label="Navegação principal">
         <Link to="/">Início</Link>
         <Link to="/#projetos">Projetos</Link>
         <Link to="/#contato">Contato <Seta /></Link>
-        <Link to="/gestao">Gestão</Link>
+        <NavLink className="nav-gestao" to="/gestao">Gestão</NavLink>
       </nav>
     </header>
   );

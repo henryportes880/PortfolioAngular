@@ -22,12 +22,10 @@ function Contato() {
     <section id="contato" className="contato" aria-labelledby="titulo-contato">
       <div className="container contato-grid">
         <div className="contato-intro">
-          <p className="eyebrow">Contato</p>
-          <h2 id="titulo-contato">Uma conversa<br />começa com um olá.</h2>
-          <p>Uma ideia, uma dúvida ou algo para compartilhar? Este é o espaço para colocar em palavras.</p>
+          <h2 id="titulo-contato">Contato</h2>
+          <p>Uma conversa começa com um olá.</p>
           <div className="nota-demo" id="nota-demo">
-            <span className="eyebrow">Formulário de demonstração</span>
-            <p>Feito como exercício em React. Você pode testar os campos: os dados ficam nesta página e nenhuma mensagem é enviada.</p>
+            <p>Formulário de demonstração. Os dados ficam nesta página e nenhuma mensagem é enviada.</p>
           </div>
         </div>
         <div className="contato-formulario">
