@@ -144,3 +144,21 @@ textarea { min-height: 160px; resize: vertical; }
   .catalogo { padding-block: 54px; }
   .catalogo-lista { grid-template-columns: 1fr; gap: 22px; }
 }
+
+.pagina-interna { padding-block: 44px 72px; }
+.pagina-interna h1 { margin-bottom: 24px; }
+.gestao h2 { margin-block: 24px 16px; font-size: clamp(24px, 5vw, 34px); }
+.gestao-topo, .gestao-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.gestao-topo { justify-content: space-between; }
+.gestao-topo h1 { margin: 0; }
+.gestao form { max-width: 620px; margin-block: 24px; }
+.gestao fieldset { min-width: 0; padding: 0; margin: 0; border: 0; }
+.gestao input, .gestao textarea { margin-top: 6px; }
+.gestao textarea { min-height: 110px; }
+.gestao button { min-height: 44px; padding: 10px 20px; background: var(--escuro); }
+.gestao button:disabled { opacity: .6; cursor: wait; }
+.gestao .erro { color: #a33024; overflow-wrap: anywhere; }
+.gestao-lista { padding: 0; list-style: none; }
+.gestao-lista li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding-block: 12px; border-top: 1px solid var(--cinza); overflow-wrap: anywhere; }
+.gestao-lista strong { min-width: 0; }
+.cabecalho nav { flex-wrap: wrap; }

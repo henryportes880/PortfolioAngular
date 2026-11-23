@@ -689,7 +689,7 @@ ao Codespace atual.
 
 #### Testes realizados nesta implementação
 
-Verificação em 16/11/2026, no ambiente do Codex:
+Verificação em 16/11/2026, no ambiente de testes:
 
 - `npm run build` e `npm run lint`: concluídos sem falhas.
 - `curl` nas duas rotas públicas: HTTP 200 com JSON e CORS permitindo a leitura.
@@ -723,14 +723,106 @@ conferi-lo no seu navegador: use Ctrl+C no terminal da API, recarregue o front,
 confirme os dois avisos vermelhos e a ausência de “Carregando”; depois execute
 `node server.js` no mesmo terminal e recarregue. A retomada deve mostrar os dados.
 
-Uso de IA nesta aula: o Codex foi usado para ler os materiais, implementar a
-integração no React e executar/verificar os testes descritos. Isso não representa
-respostas pessoais de caderno nem o preenchimento da avaliação anônima da aula.
+## Aula 28
 
-### Declaração de uso de IA nesta correção
+### Como rodar do zero
 
-Usei o Codex (IA) para revisar os critérios e os arquivos, configurar um banco de
-teste isolado, executar e conferir requisições reais, registrar as respostas no
-README, corrigir os caminhos de execução e permitir configurar o socket de teste
-em `db.js`. A finalidade foi corrigir a ausência de evidências apontada pelo
-professor e documentar os limites encontrados, sem inventar resultados ou histórico.
+Use Node.js 24 e dois terminais abertos na raiz do repositório.
+
+1. **Banco.** Inicie o MariaDB e verifique se `dwii_db` já existe.
+
+   ```sh
+   sudo service mariadb start
+   sudo mariadb -e "SHOW DATABASES LIKE 'dwii_db';"
+   ```
+
+   Em uma instância nova, importe primeiro a estrutura e os dados de exemplo e,
+   depois, a tabela de usuários. O `setup.sql` contém `DROP TABLE`. Se o banco
+   já estiver configurado, use os dados existentes. Importe `usuarios.sql`
+   apenas se a tabela `usuarios` ainda não existir.
+
+   ```sh
+   sudo mariadb < PortfolioAngular/sql/setup.sql
+   sudo mariadb dwii_db < PortfolioAngular/sql/usuarios.sql
+   ```
+
+2. **API.** Instale as dependências, crie o usuário local se necessário e suba
+   o servidor. Os valores abaixo são fictícios. Para criar seu usuário, informe
+   seu e-mail e uma senha própria na leitura do terminal.
+
+   ```sh
+   cd PortfolioAngular/api-node
+   npm install
+   read -r -p 'E-mail (exemplo gestao@example.test): ' EMAIL_GESTAO
+   read -r -s -p 'Senha (exemplo Senha-Ficticia-28): ' SENHA_GESTAO
+   printf '\n'
+   node criar-usuario.js "$EMAIL_GESTAO" "$SENHA_GESTAO"
+   unset EMAIL_GESTAO SENHA_GESTAO
+   node server.js
+   ```
+
+3. **Porta 3000.** No painel **PORTS** do Codespace, torne a porta **3000**
+   **Public** e copie o endereço encaminhado. A URL seguida de
+   `/api/projetos` deve devolver JSON no navegador.
+4. **Endereço do React.** Confira o endereço em
+   `portfolio-react/src/api.js`, sem barra final. Para testar com navegador e
+   API na mesma máquina, use a variável `VITE_API_URL=http://localhost:3000`
+   ao iniciar o Vite.
+5. **React.** Em outro terminal, partindo da raiz, instale e inicie o front.
+   Abra a porta **5173**.
+
+   ```sh
+   cd portfolio-react
+   npm install
+   npm run dev -- --host 0.0.0.0
+   ```
+
+### Rotas
+
+- `/` mostra o portfólio, os projetos publicados, o catálogo e o formulário de contato.
+- `/gestao` mostra o login ou a área para cadastrar, editar e excluir projetos publicados.
+- `*` mostra a página de endereço não encontrado, com um link para o Início.
+
+### Tela × pedido à API × precisa de token
+
+| Tela | Pedido à API | Precisa de token |
+| --- | --- | --- |
+| Início e Gestão, lista de projetos publicados | `GET /api/projetos` | Não |
+| Início, catálogo | `GET /api/tecnologias` | Não |
+| Gestão, login | `POST /api/login` | Não |
+| Gestão, cadastrar e publicar | `POST /api/projetos` | Sim |
+| Gestão, editar | `PUT /api/projetos/:id` | Sim |
+| Gestão, excluir | `DELETE /api/projetos/:id` | Sim |
+| Endereço não encontrado | Nenhum | — |
+
+### O que este front ainda não faz
+
+- O formulário de contato só simula o envio na página.
+- A gestão usa a lista pública de projetos. Rascunhos criados por outros
+  clientes ficam fora dessa lista, e a tela não oferece controle de status.
+
+### Proteção das escritas
+
+A API valida o token recebido em cada cadastro, edição e exclusão antes de
+alterar o banco. Ocultar a gestão controla apenas o que aparece na interface.
+Se uma escrita retornar 401, o React limpa a sessão e pede um novo login.
+
+### Verificação da Aula 28
+
+- Chromium com a API Node e um MariaDB isolado. Foram conferidos o acesso
+  direto às rotas, o F5, a navegação pelo menu e a página de endereço não
+  encontrado. Login incorreto mostrou a mensagem da API. Login correto
+  persistiu após F5, e Sair removeu o token.
+- Cadastro com cinco campos publicado no Início sem F5, edição com
+  formulário preenchido, exclusão e mensagem de recusa da API. Para POST,
+  PUT e DELETE, um token inválido inserido no navegador provocou 401 real
+  da API, com retorno ao login e limpeza do armazenamento.
+- Listas vazias conferidas com o banco isolado sem projetos publicados.
+  Ao parar a API local, projetos e catálogo exibiram seus próprios erros.
+  Layout em 320 e 390 px sem rolagem horizontal. Build e lint concluídos.
+- A porta pública do Codespace respondeu HTTP 200 aos dois GETs. O
+  Chromium do ambiente de teste recusou o certificado do proxy. As listas
+  também foram conferidas no navegador com as respostas JSON reais
+  encaminhadas pelo teste. Os testes de escrita usaram apenas o banco isolado.
+
+Usei inteligência artificial para auxiliar na implementação das rotas e da gestão em React, nos testes com a API e o MariaDB e na revisão das instruções e evidências no README.

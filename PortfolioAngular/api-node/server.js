@@ -106,7 +106,7 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// POST cria: os dados vem no corpo, em JSON, e o id nasce no banco. Agora so com token.
+// POST cria com token. O React pede publicacao; os outros clientes podem criar rascunhos.
 app.post('/api/projetos', autenticar, async (req, res) => {
   try {
     const dados = req.body;
@@ -127,7 +127,7 @@ app.post('/api/projetos', autenticar, async (req, res) => {
       dados.tecnologias ?? '',
       dados.link_github ?? '',
       dados.ano ?? new Date().getFullYear(),
-      'rascunho'
+      dados.status === 'publicado' ? 'publicado' : 'rascunho'
     ]);
 
     res.status(201).json({ id: resultado.insertId });
